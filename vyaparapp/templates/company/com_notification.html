@@ -1,0 +1,61 @@
+<!-- create by athul -->
+
+{% extends 'company/src/html/base.html' %}
+
+
+{% block content %}
+{% load static %}
+<style>
+       @media (max-width:768px) {
+        .row{
+            margin-left: 10px !important;
+            margin-right: 10px !important;
+        }
+        .h4{
+            font-size: 15px !important;
+            margin-left: 5px !important;
+        }
+       }
+</style>
+<body  style="background-color: rgba(176, 199, 205, 0.4);">
+    <div class="body-wrapper">
+        <div class="container-fluid">
+            {% if data %}
+            {% for d in data %} 
+            {% if data.company_id.dateperiod is None  %}
+            {% if staff.company.Trial_Feedback == 'No_Response' %}
+            <div class="row p-4 m-5" style="background-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <h5><b>🚀 <b>Upgrade Available</b></b></h5>
+                <hr>
+                <h4 class="h4 text-primary" style="margin-left: 50px;"><b style="margin-right: 10px;">{{d.Discription}} 🚀 🚀 <br>
+   
+                </h4>
+                <center>
+                    <a href="{% url 'Intrest' %}" class="btn btn-primary mt-3" style="font-weight: bold;width: 20%;margin: 5px;">INTREST</a>
+                    <a href="{% url 'NotIntrest' %}" class="btn btn-danger mt-3" style="font-weight: bold;width: 20%;margin: 5px;">NOT INTREST</a>
+                    </center>
+            </div>
+            {% endif %}
+
+            {% else %}
+            
+            <div class="row p-4 m-5" style="background-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <h6><b>{{d.Title}}</b></h6>
+                <hr>
+                <h4 class="h4" style="margin-left: 60px;"><b style="margin-right: 10px;">{{d.Discription}}.......
+                   
+                    <a href="{% url 'Companyprofile'  %}" style="font-size: 15px;">View More</a>
+                    
+                </h4>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+
+            <center><img src="{% static 'images\no-data-file.png' %}" alt="" class="mt-5 pt-5"></center>
+            {% endif %}
+        </div>
+    </div>        
+</body>
+
+{% endblock content %}

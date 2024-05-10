@@ -1,0 +1,986 @@
+<!-- create by athul -->
+<!--updated by Nithya-->
+
+{% extends 'company/src/html/base.html' %}
+{% load social_share %}
+{% block content %}
+{% load static %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+{% load my_extras %}
+
+<style>
+    .sticky-header1 {
+        position: sticky;
+        top: 0;
+        z-index: 1; /* Ensures the sticky header stays above other content */
+        background-color: #f2f2f2; 
+    }
+    .bs{
+        box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);
+    }
+    .bs_sm{
+        box-shadow: inset 2px 2px 5px 3px rgba(0, 0, 0, 0.199);
+    }
+    .tb{
+        color: black;
+    }
+    .tg{
+        color: rgb(0, 140, 7);
+    }
+    .tr{
+        color: rgb(218, 0, 0);
+    }
+    .btn_add{
+        background-color: orange;
+        color: black;
+    }
+    .btn_add:hover{
+        background-color: rgb(234, 152, 0);
+        color: black;
+    }
+    ::-webkit-scrollbar{
+        display: none
+    }
+    .bg-pink{
+        background-color: rgb(239, 3, 82)
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 3px;
+        text-align: center;
+        /* border: 1px solid #ddd; */
+    }
+
+    th.extra {
+        position: relative;
+        
+    }
+
+    th.extra span {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    #myDropdown {
+        display: none;
+    }
+
+    #myDropdown.show {
+        display: block;
+    }
+    #templates, #slip{
+        cursor: pointer;
+    }
+
+    #myDropdown {
+        display: none;
+        position: absolute;
+        box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);
+        background-color: #f9f9f9;
+        min-width: 160px;
+        margin-top: 50px;
+        /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
+        z-index: 1;
+    }
+
+    #myDropdown  a {
+        display: block;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    #myDropdown  a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+        padding: 15px;
+        z-index: 10000;
+        width: 25%;
+    }
+
+    .dropdown-content label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .dropdown-content input {
+        width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        /* z-index: 1; */
+    }
+
+    .sticky-header thead {
+        position: sticky;
+        top: 0;
+        background-color: #3498db; /* Add your desired background color */
+        color: #fff; /* Add your desired text color */
+    }
+</style>
+
+
+<div class="body-wrapper">
+    <br><br><br>
+    <div class="row p-0 m-0">
+        <div class="col-12  p-0 m-0">
+            <div class=" bg-light bg-light bs pb-0 mb-0"style="height:100%;width:100%">
+                <div class="d-flex justify-content-center pt-4">
+                    <a href="{% url 'add_salesinvoice' %}"  id="b1" class="btn  text-white" style="margin-right: 10px; background-color: rgb(252, 3, 3,0.7);border-radius: 20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Add Sale  <i class="fa fa-plus"></i></a>
+                    <a href="{% url 'add_purchasebill' %}" id="b2" class="btn  text-white" style="margin-right: 10px;background-color: rgba(3, 161, 252, 0.7);border-radius: 20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Add Purchase  <i class="fa fa-plus"></i></a>
+                    <a href="" id="b3" class="btn text-primary" style="border-radius: 20px;border: 1px solid rgb(40, 12, 222);background-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Add More  <i class="fa fa-plus"></i></a>
+                </div>
+                <p></p>
+                <hr class="p-0 m-0">
+                <div style="background-color: rgba(0, 195, 255, 0.205);" class="p-1 pb-0 mb-0">
+                    <div class="row pb-0 mb-0">
+                        <div class="col text-center pb-2" style="border-bottom: 3px solid rgba(0, 0, 0, 0.548);"><a class="fw-bolder fs-4 text-dark" href="">PRODUCTS</a></div>
+                        <div class="col text-center pb-2" style="border-bottom: 3px solid transparent;"><a class="fw-bolder fs-4" style="color: gray;" href="">SERVICES</a></div>
+                        <div class="col text-center pb-2" style="border-bottom: 3px solid transparent;"><a class="fw-bolder fs-4" style="color: gray;" href="">CATEGORY</a></div>
+                        <div class="col text-center pb-2" style="border-bottom: 3px solid transparent;"><a class="fw-bolder fs-4" style="color: gray;" href="">UNITS</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row ps-3 pe-3 m-0">
+        <div class="col-sm-12 col-lg-3  ps-2 pe-3 pb-2" style="height: 100%;">
+            <div class="card bg-light bs" style="height:100%;">
+                <div class="row m-0">
+                    <div class="col-12 p-1 bs justify-content-center pe-3" style="z-index:2; ">
+                        <div class="d-flex justify-content-center">
+                            
+                            <button class="btn btn-sm" type="button" data-toggle="modal" data-target="#importModal">
+                                <span><img width="25px" src="{% static 'images/import.png' %}" alt="no img" class="bg-info"></span> &nbsp;
+                                <span style="color: black; font-size: small; font-weight: bold;" class="text-dark">IMPORT ITEM</span>
+                            </button> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-12 p-4 pt-3" style="z-index:2">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="d-flex justify-content-between">
+                                <span id="search_item" class="fa fa-search tb bg-info text-light ms-2 mt-1" style="border-radius: 50%;padding: 0.77rem;"></span>
+                                <a id="add_item_btn" class="btn btn-sm rounded p-2 mt-1 btn_add" href="{% url 'item_create' %}" style="font-weight: bold;"><span class="fa fa-plus" ></span> Add Item</a>
+                            </div>
+                            <div class="position-relative">
+                                <div class="position-absolute end-0" style="margin-top:0.5rem;margin-right:0.7rem">
+                                    <span hidden id="close_seacrh" class="fa fa-times fs-4 tr bg-gradient"
+                                    hx-post="{% url 'item_search_filter' %}"
+                                    hx-trigger="click delay:0.1s"
+                                    hx-target="#item_search_filter_target"
+                                    ></span>
+                                </div>
+                            </div>
+                        
+                            <input hidden id="search_item_input" class="form-control border-dark text-dark" type="text" placeholder="search here.." name="searching_item"
+                            hx-post="{% url 'item_search_filter' %}"
+                            hx-trigger="keyup"
+                            hx-target="#item_search_filter_target"
+                            >
+                        </form>
+                    </div>
+                    <div class="ps-3 pe-3">
+                        <hr class="p-0 m-0">
+                    </div>
+                    <div class="col-12 p-3 pt-0">
+                        {% if all_items %}
+                        <div id="item_search_filter_target">
+                            <form action="" method="post">
+                                {% csrf_token %}
+
+                                <div style="overflow: auto;height: 42rem;">
+                                <table class="table w-100 table-light table-striped table-hover sticky-header bg-light">
+                                    <thead class="bg-primary ">
+                                        <th class="text-start fs-2 tb">ITEM</th>
+                                        <th class="text-start fs-2 tb " colspan="2">QUANTITY</th>
+                                        <!-- <th></th> -->
+                                    </thead>
+                                    <tbody>
+                                        
+                                        {% for i in all_items %}
+                                        <tr class="item_lists_hide">
+                                            <!-- <td style="cursor:pointer" class="text-start fs-2 fw-bold text-dark"
+                                            hx-post="{% url 'item_get_detail' i.id %}"
+                                            hx-trigger="click delay:0s"
+                                            hx-target="#item_get_detail_target"
+                                            >{{ i.item_name|capfirst }}</td>
+                                            <td class="text-end fs-2 fw-bolder" style="color: green;">
+                                                {{ i.item_current_stock }}
+                                                <div class="btn-group mb-1">
+                                                    <button style="border: none;background: none;" type="button" class="ropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <span class="fa fa-ellipsis-v text-dark fs-1 ps-2"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item fw-bold tb" href="{% url 'item_view_or_edit' i.id %}"><span class="fa fa-eye pe-2 tg"></span> View / Edit</a></li>
+                                                    <li><a class="dropdown-item fw-bold tb" type="button" onclick="confirm_delete({{ i.id }})"><span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td> -->
+
+                                            <td style="cursor:pointer" class="text-start fs-2 fw-bold text-dark clickable-row" data-href="{% url 'items_list' i.id %}">
+                                                <a href="{% url 'items_list' i.id %} " class="my-3">
+                                                    {{ i.item_name|capfirst }}
+                                                </a>
+                                            </td>
+                                         
+                                            <td class="text-end fs-2 fw-bolder clickable-row px-0 mx-0" style="white-space: nowrap;"   data-href="{% url 'items_list' i.id %}">
+                                                <a href="{% url 'items_list' i.id %}" class="my-3 mx-0 p-0 ">
+                                                    {{ i.item_current_stock }}
+                                                </a>
+                                            </td>
+
+                                            <td class="px-0 mx-0">
+                                                <div class="btn-group mb-1 m-0 p-0">
+                                                    <button style="border: none;background: none;" type="button" class=" dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <span class="fa fa-ellipsis-v text-dark fs-1 ps-2 p-0"></span>
+                                                    </button>
+                                                    
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item fw-bold tb hide_table_text_v" href="{% url 'item_view_or_edit' i.id %}"><span class="fa fa-eye pe-2 tg"></span> View / Edit</a></li>
+                                                        <li><a class="dropdown-item fw-bold tb" type="button" href="{% url 'item_delete' i.id %}" ><span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="text-center mt-2">
+                            <small>Currently no items are available</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-9  ps-2 pe-3 d-flex flex-column" style="height: 100%;">
+          <div id="item_get_detail_target">
+            <div class="row m-0" style="height:20%">
+                {% for message in messages %}
+                    <div class="alert alert-danger text-center" role="alert">{{ message }}</div>
+                {% endfor %}
+                <div class="card bg-light bs p-3 mb-3">
+                    <div class="d-flex justify-content-between">
+                        
+                        <p class="tb fw-bolder fs-4">{{ first_item.item_name|upper }}</p>
+                        
+                        <button class="btn btn-primary bg-gradient fs-2 removefields"data-bs-toggle="modal" data-bs-target="#myModal1" 
+                        hx-get="{% url 'item_get_details_for_modal_target' first_item.id %}"
+                        hx-trigger="click delay:0s"
+                        hx-target="#item_get_details_for_modal_target">
+                        <i class="fa fa-sliders-h pe-1" aria-hidden="true" style="color: white;"></i> &nbsp;ADJUSTMENT ITEM
+                    </button>
+                    </div>
+                    <p></p>
+                    <div class="d-flex justify-content-between">
+                        <p class="tb fw-bolder fs-2">SALE PRICE:  <span class="ps-2 tg">₹{{ first_item.item_sale_price }}</span></p>
+                        <p class="tb fw-bolder fs-2">STOCK QUANTITY:  <span class="ps-2 tg">{{ first_item.item_current_stock }}</span></p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="tb fw-bolder fs-2">PURCHASE PRICE:  <span class="ps-2 tg">₹{{ first_item.item_purchase_price }}</span></p>
+                        <p class="tb fw-bolder fs-2">STOCK VALUE:  <span class="ps-2 tg">₹{{ first_item.item_current_stock|mul:first_item.item_at_price }}</span></p>
+                    </div>
+                    {% if first_item.item_min_stock_maintain %}
+                    <div class="d-flex justify-content-between">
+                        <p class="tb fw-bolder fs-2">MINIMUM STOCKS TO MAINTAIN:  <span class="ps-2 tg">{{ first_item.item_min_stock_maintain }}</span></p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- <div class="row" style="height: 0.5rem;"></div> -->
+            <div class="row pt-1 m-0" style="height: 42rem;">
+                {% if first_item %}
+            <!-- {% if first_item.item_min_stock_maintain %} style="height:40rem;" {% else %} style="height:42rem;" {% endif %}> -->
+                <div class="card p-0 bg-light bs">
+                    <div class="row m-0 p-0 pt-3">
+                        <div class="col-sm-12 col-lg-5">
+                            <p class="tb fw-bolder pt-2">TRANSACTIONS</p>
+                            <div class="position-relative">
+                                <div class="position-absolute removefields" style="margin-top:0.4rem;margin-left: 0.5rem;">
+                                    <span class="fa fa-search fs-5 text-info"></span>
+                                </div>
+                            </div>
+                            <input id="search_input1" style="padding-inline-start: 2rem;" class="w-100 border-secondary text-dark pt-1 pb-1 pe-1 rounded removefields" type="text" placeholder=" search here..">
+
+                        </div>
+                        <div class="col-sm-12 col-lg-3 removefields">
+                            
+                        </div>
+                        <div class="col-sm-12 col-lg-4 pt-1 removefields">
+                            <!-- <div class="position-relative">
+                                <div class="position-absolute" style="margin-top:0.4rem;margin-left: 0.5rem;">
+                                    <span class="fa fa-search fs-5 text-info"></span>
+                                </div>
+                            </div> -->
+                            <div class="d-flex">
+                                <button class="btn p-0 ps-2 pe-2 ms-2" type="button" onclick="toggleDropdown()">
+                                    <span>
+                                        <img width="25px" src="{% static 'images/shareimg.png' %}" alt="no img"><br>
+                                        <span style="font-size: 10px;"><strong>SHARE</strong></span>
+                                    </span>
+                                    
+                                </button>
+                                <button class="btn p-0 ps-2 pe-2 ms-2" type="button" onclick="exportToExcel()">
+                                    <span >
+                                        <img width="25px" src="{% static 'assets/excel2.png' %}" alt="no img"><br><span style="font-size: 10px;"><strong>EXPORT</strong></span></em>
+                                    </span>
+                                </button>
+
+                                <button class="btn p-0 ps-2 pe-2 ms-2" type="button" id="pdflink">
+                                    <span >
+                                        <img width="20px" src="{% static 'images/pdfdownload.png' %}" alt="no img"><br><span style="font-size: 10px;"><strong>PDF</strong></span></em>
+                                    </span>
+                                </button>
+
+                                <button class="btn p-0 ps-2 pe-2 ms-2" type="button" onclick="printfunction()">
+                                    <span><img width="25px" src="{% static 'images/printer.jpeg' %}" alt="no img"><br><span style="font-size: 10px;"><strong>PRINT</strong></span></span>
+                                    <!-- <br><span style="color: black; font-size: small; font-weight: bold;">Print</span> -->
+                                </button>
+                                <div class="dropdown-content" id="myDropdown" style="z-index: 10000;">
+                                    <ul style="margin-bottom: -1px;">{% post_to_whatsapp object_or_url "WhatsApp" %}</ul>
+                                    <ul style="margin-bottom: -1px;"><a data-toggle="modal" data-target="#emailModal">Email</a></ul>
+                                </div>
+                                
+                                <!-- <input id="search_input1" style="padding-inline-start: 2rem;" class="w-100 border-secondary text-dark pt-1 pb-1 pe-1 rounded" type="text" placeholder=" search here.."> -->
+                                <!-- <button class="btn p-0 ps-2 pe-2 ms-2" type="button" onclick="exportToExcel()"><span><img width="22px" src="{% static 'assets/excel2.png' %}" alt="no img"></span></button> -->
+                            </div>
+                            
+                        </div>
+                       
+                        <div class="mt-3 col-sm-12 col-lg-12 pt-1" style="overflow: scroll;height: 31rem;">
+                            <table id="myTable" class="table table-bordered table-info table-striped tb table-responsive w-100" style="overflow: scroll;">
+                                <thead class="fs-1 tb sticky-header1" >
+                                    <tr class="fs-2 tb">
+                                        <th class="bg-secondary text-dark align-middle px-1 removefields"  style="white-space: nowrap;">
+                                            # 
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">TYPE</span>
+                                            <a class="extra text-dark removefields" onclick="filterDropdown(1)">&nbsp;<i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent1">
+                                                <label for="filterInput1" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput1"  /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(1)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(1)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">INVOICE</span>
+                                            <a class="extra text-dark removefields" onclick="filterDropdown(2)">&nbsp;<i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent2">
+                                                <label for="filterInput2" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput2"  /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(2)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(2)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">NAME</span>
+                                            <a class="extra text-dark removefields" onclick="filterDropdown(3)">&nbsp;<i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent3">
+                                                <label for="filterInput3" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="date" id="filterInput3"  /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(3)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(3)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">DATE</span>
+
+                                            <a class="extra text-dark removefields" onclick="filterDropdown(4)">&nbsp;<i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent4">
+                                                <label for="filterInput4" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput4"  /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(4)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(4)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">QUANTITY</span>
+                                            <a class="extra text-dark removefields" onclick="filterDropdown(5)">&nbsp;<i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent5">
+                                                <label for="filterInput5" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput5" /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(5)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(5)">Apply</a>
+                                            </div>
+                                        </th>
+                                        
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">PRICE</span>
+ 
+                                            &nbsp; <a class="extra text-dark removefields" onclick="filterDropdown(6)"><i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent6">
+                                                <label for="filterInput6" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput6" /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(6)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(6)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span class = "toShow">STATUS</span>
+
+                                            &nbsp; <a class=" extra text-dark removefields" onclick="filterDropdown(7)"><i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent7">
+                                                <label for="filterInput7" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput7" /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(7)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(7)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">ACTION</span>
+
+                                            &nbsp; <a class="extra text-dark removefields" onclick="filterDropdown(8)"><i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent8">
+                                                <label for="filterInput8" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput8" /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(8)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(8)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1"  style="white-space: nowrap;">
+                                            <span id = "toShow">BY</span>
+
+                                            &nbsp; <a class="extra text-dark removefields" onclick="filterDropdown(9)"><i class="fa fa-filter" aria-hidden="true"></i></a>
+                                            <div class="dropdown-content removefields" id="dropdownContent9">
+                                                <label for="filterInput9" style="color: black; text-align: left;">Equal To</label>
+                                                <input type="text" id="filterInput9" /><br>
+                                                <a class="btn btn-info" onclick="cleardropdown(9)">Clear</a> 
+                                                &nbsp;<a class="btn btn-info" onclick="filterTable(9)">Apply</a>
+                                            </div>
+                                        </th>
+                                        <th class="bg-secondary text-dark align-middle px-1 removefields"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr {% if not first_item.item_opening_stock  %} hidden{% endif %}>
+                                        <td class= "hide_table_text_in removefields" style="font-size: 20px; color: {% if first_item.item_opening_stock == 0 %}red{% else %} orange{% endif %}; vertical-align: middle;">&#8226;</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">Opening Stock</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;"></td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ first_item.item_name }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ first_item.item_date|date:"d-m-Y" }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ first_item.item_opening_stock }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ first_item.item_at_price }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;"></td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ Item_History.action }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ Item_History.staff__first_name }} {{ Item_History.staff__last_name }}</td>
+                                        <td class="px-0 pt-3 m-0 text-center removefields" style="white-space: nowrap;">
+                                            <div class="btn-group mb-1">
+                                                <button style="border: none;background: none;" type="button" class="ropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span class="fa fa-ellipsis-v text-dark fs-1 ps-"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item fw-bold tb hide_table_text_v" href="{% url 'item_view_or_edit' first_item.id %}"><span class="fa fa-eye pe-2 tg"></span> View / Edit</a></li>
+                                                    <li><a class="dropdown-item fw-bold tb hide_table_text_v" href="{% url 'item_histories' first_item.id %}"><span class="fa fa-history pe-2 th"></span> History</a></li>
+                                                    <li><a class="dropdown-item fw-bold tb hide_table_text_d" href="{% url 'item_delete_open_stk' first_item.id %}" ><span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for i in transactions %}
+                                    <tr>
+                                        <!-- <div style="width: 10px;height: 10px;box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.205);border-radius: 50%;" {% if forloop.counter|mod:10 == 0 %}class="bg-success"{% elif forloop.counter|mod:10 == 1 %}class="bg-warning"{% elif forloop.counter|mod:10 == 2 %}class="bg-danger"{% elif forloop.counter|mod:10 == 3 %}class="bg-success"{% elif forloop.counter|mod:10 == 4 %}class="bg-info"{% elif forloop.counter|mod:10 == 5 %}class="bg-primary"{% elif forloop.counter|mod:10 == 6 %}class="bg-secondary"{% elif forloop.counter|mod:10 == 7 %}class="bg-warning"{% elif forloop.counter|mod:10 == 8 %}class="bg-danger"{% else %}class="bg-pink"{% endif %}></div> -->
+
+                                        <td style="font-size: 20px; vertical-align: middle;; color: {% if i.trans_type == 'add stock' %} green {% elif i.trans_type == 'reduce stock' %} red {% else %}  black {% endif %}" class="removefields">&#8226;</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ i.trans_type|capfirst }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;"></td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;"></td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ i.trans_date|date:"d-m-Y" }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ i.trans_qty }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ first_item.item_at_price }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;"></td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ Item_History.action }}</td>
+                                        <td class="text-center  px-0" style="white-space: nowrap;">{{ Item_History.staff__first_name }} {{ Item_History.staff__last_name }}</td>
+                                        <td class="px-0 pt-3 m-0 text-center removefields " style="white-space: nowrap;">
+                                            <div class="btn-group mb-1">
+                                                <button style="border: none;background: none;" type="button" class="ropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span class="fa fa-ellipsis-v text-dark fs-1 ps-"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item fw-bold tb hide_table_text_v" href="{% url 'item_view_or_edit' first_item.id %}"><span class="fa fa-eye pe-2 tg"></span> View / Edit</a></li>
+                                                    <li><a class="dropdown-item fw-bold tb hide_table_text_v" href="{% url 'item_histories' first_item.id %}"><span class="fa fa-history pe-2 th"></span> History</a></li>
+                                                    <li><button type="button" href="{% url 'transaction_delete' i.id %}" class="dropdown-item fw-bold tb hide_table_text_d"><span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete</button></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+ 
+
+<!-- modal adjustment create start -->
+<!-- <div class="modal modal-lg fade p-0" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog p-0">
+    <div class="modal-content p-0">
+        <div id="item_get_details_for_modal_target">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal 1</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Content for Modal 1 goes here.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+  </div>
+</div> -->
+
+<!-- modal adjustment create end -->
+
+<div class="modal modal-lg fade" id="myModal1" tabindex="-1" aria-labelledby="myModal1Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="item_get_details_for_modal_target">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal 1</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Content for Modal 1 goes here.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Modal -->
+<div class="modal modal-lg fade" id="myModal2" tabindex="-1" aria-labelledby="myModal2Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="item_transaction_view_or_edit_target">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- import modal -->
+
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">IMPORT ITEM</h5>
+                <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="font-size: large;">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'import_items' %}" enctype="multipart/form-data" id="excelForm" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="" style="color: red; font-size: x-small;">* Refer Downloaded Excel Work Sheet for Values and Fields 
+                        Details</label><br>
+                        <a href="{% url 'downloadItemSampleImportFile' %}" id="downloadExcelLink">Download Sample Template Here</a><br><br>
+
+                        <input type="file" class="form-control-file" id="itemfile" name="itemfile" accept=".xls, .xlsx" /><br><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    function exportToExcel() {
+        
+        $('.hide_table_text_v').text('');
+        $('.hide_table_text_d').text('');
+        $('.hide_table_text_i').text('');
+        $('.hide_table_text_in').text('');
+
+        // Create a copy of the table for export and remove unwanted columns
+        const originalTable = document.getElementById('myTable');
+        const exportTable = originalTable.cloneNode(true);
+
+        const headerRow = exportTable.querySelector('thead tr');
+        console.log(headerRow);
+        const columnsToRemove = ["#"];
+       
+        for (let i = 0; i < columnsToRemove.length; i++) {
+            const columnIndex = Array.from(headerRow.children).findIndex(cell => cell.innerText.trim() === columnsToRemove[i]);
+            if (columnIndex !== -1) {
+                headerRow.children[columnIndex].remove();
+                for (const row of exportTable.querySelectorAll('tbody tr')) {
+                    row.children[columnIndex].remove();
+                }
+            }
+        }
+        const dropdownContents = exportTable.querySelectorAll('.dropdown-content');
+        dropdownContents.forEach(content => content.remove());
+
+        // Remove filter icons
+        const filterIcons = exportTable.querySelectorAll('.fa-filter');
+        filterIcons.forEach(icon => icon.remove());
+
+        // Export the modified table to Excel
+        const wb = XLSX.utils.table_to_book(exportTable, { sheet: "Item Details" });
+        console.log(wb);
+        XLSX.writeFile(wb, "Item.xlsx");
+
+        // Update the displayed text
+        $('.hide_table_text_v').html('<span class="fa fa-eye pe-2 tg"></span> View / Edit');
+        $('.hide_table_text_d').html('<span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete');
+        $('.hide_table_text_i').html('#');
+        $('.hide_table_text_in').html('&#8226;');
+    }
+
+    $(document).ready(function() {
+        $("#search_input1").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value)>-1);
+            });
+        });
+    });
+    $(document).ready(function(){
+        $('#search_item').click(function(){
+            $(this).attr('hidden',true)
+            $('#search_item_input').attr('hidden',false)
+            $('#close_seacrh').attr('hidden',false)
+            $('#add_item_btn').attr('hidden',true)
+        })
+    })
+    $(document).ready(function(){
+        $('#close_seacrh').click(function(){
+            $('#search_item_input').val('')
+            $('#search_item_input').attr('hidden',true)
+            $('#search_item').attr('hidden',false)
+            $('#add_item_btn').attr('hidden',false)
+            $('#close_seacrh').attr('hidden',true)
+        })
+    })
+    function confirm_delete(Id)
+    {
+        swal({
+            title: "Confirmation !",
+            text: "Do you want to Delete this item?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Deleted !",
+                    text: "Item Deleted Successfilly!",
+                    icon: "success",
+                    buttons: false,
+                })
+                // 
+                .then((willDelete) => {
+                if (willDelete) {
+                    // Redirect to the delete_teacher view with the teacher's ID
+                    window.location.href = "{% url 'item_delete' 0 %}".replace('0', Id);
+                    
+                } else {
+                    window.location.href = "{% url 'item_delete' 0 %}".replace('0', Id);
+                }
+            });
+                // 
+            } else {
+                swal("Action Cancelled!");
+            }
+        });
+    }
+    function delete_transaction(Id)
+    {
+        swal({
+            title: "Confirmation !",
+            text: "Do you want to Delete this Transaction?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Deleted !",
+                    text: "Transaction Deleted Successfilly!",
+                    icon: "success",
+                    buttons: false,
+                })
+                // 
+                .then((willDelete) => {
+                if (willDelete) {
+                    // Redirect to the delete_teacher view with the teacher's ID
+                    window.location.href = "{% url 'transaction_delete' 0 %}".replace('0', Id);
+                    
+                } else {
+                    window.location.href = "{% url 'transaction_delete' 0 %}".replace('0', Id);
+                }
+            });
+                // 
+            } else {
+                swal("Action Cancelled!");
+            }
+        });
+    }
+
+    function item_open_stk_delete(Id)
+    {
+        swal({
+            title: "Confirmation !",
+            text: "Do you want to Delete this Opening Stock Detail?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Deleted !",
+                    text: "Opening Stock Deleted Successfilly!",
+                    icon: "success",
+                    buttons: false,
+                })
+                // 
+                .then((willDelete) => {
+                if (willDelete) {
+                    // Redirect to the delete_teacher view with the teacher's ID
+                    window.location.href = "{% url 'item_delete_open_stk' 0 %}".replace('0', Id);
+                    
+                } else {
+                    window.location.href = "{% url 'item_delete_open_stk' 0 %}".replace('0', Id);
+                }
+            });
+                // 
+            } else {
+                swal("Action Cancelled!");
+            }
+        });
+    }
+
+    function toggleDropdown() {
+        var dropdownContent = document.getElementById("myDropdown");
+        dropdownContent.classList.toggle("show");
+    }
+
+    function cleardropdown(index){
+        if(index == 0){
+            document.getElementById('filterInput'+index).value = '';
+        }else{
+            document.getElementById('filterInput'+index).value = null;
+        }
+    }
+
+    function filterDropdown(index) {
+        var dropdownContent = document.getElementById('dropdownContent' + index);
+        var isVisible = dropdownContent.style.display === 'block';
+        var allDropdowns = document.querySelectorAll('.dropdown-content');
+        allDropdowns.forEach(function (dropdown) {
+            dropdown.style.display = 'none';
+        });
+        dropdownContent.style.display = isVisible ? 'none' : 'block';
+    }
+
+    function filterTable(index) {
+        var input;
+        document.getElementById('dropdownContent' + index).style.display = 'none';
+        if (index === 3) {
+            input = document.getElementById('filterInput' + index).value;
+            
+        } else {
+            input = document.getElementById('filterInput' + index).value.toUpperCase();
+        }
+        var table = document.getElementById('myTable');
+        var rows = table.getElementsByTagName('tr');
+        var isEmpty = true;
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName('td');
+            var cell = cells[index];
+            if (cell) {
+                var textValue = cell.textContent || cell.innerText;
+                
+                if (index === 1 | index === 2|index === 4 | index === 5 | index === 6 | index === 7 |index === 8 |index === 9) {
+                    if (textValue.toUpperCase().includes(input)) {
+                        rows[i].style.display = 'table-row';
+                        isEmpty = false;
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                } else if (index === 3) {
+                    if (input==''){
+                        rows[i].style.display = 'table-row';
+                            isEmpty = false;
+                    }else{
+                        dateval  = textValue.replace(/(\d{2})-(\d{2})-(\d{2})/, "$2-$1-$3");
+                        inputval  = input.replace(/(\d{2})-(\d{2})-(\d{2})/, "$2-$1-$3");
+                        const formattedDate = formatDateString(input);
+                        if (dateval === formattedDate) {
+                            rows[i].style.display = 'table-row';
+                            isEmpty = false;
+                        } else {
+                            rows[i].style.display = 'none';
+                        }
+                    }
+                }
+                // } else if (index === 4 | index === 5 | index === 6 | index === 7) {
+                //     if (textValue.toUpperCase().includes(input)) {
+                //         rows[i].style.display = 'table-row';
+                //         isEmpty = false;
+                //     } else {
+                //         rows[i].style.display = 'none';
+                //     }
+                // }
+            }
+        }
+        // emptyMessage.style.display = isEmpty ? 'block' : 'none';
+        // calculatetotal()
+    }
+    function formatDateString(inputDate) {
+        const parsedDate = new Date(inputDate);
+        const day = parsedDate.getDate();
+        const month = parsedDate.getMonth() + 1;
+        const year = parsedDate.getFullYear();
+        const formattedDate = `${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}-${year}`;
+        return formattedDate;
+    }
+
+    $(document).ready(function() {
+        // Add click event to the rows with the "clickable-row" class
+        $(".clickable-row").click(function() {
+            // Get the data-href attribute value (URL)
+            window.location = $(this).data("href");
+        });
+    });
+
+
+    $(document).ready(function ($) {
+        $(document).on('click', '#pdflink', function (event) {
+            event.preventDefault();
+            var element = document.getElementById('item_get_detail_target');
+            var elementClone = element.cloneNode(true);
+
+            // Remove the specific sections from the cloned element
+            var elementsToRemove = elementClone.querySelectorAll('.removefields');
+            elementsToRemove.forEach(function (el) {
+                el.remove();
+            });
+            
+            var opt =
+            {
+                margin: 1,
+                filename: 'Item - '+ '{{ first_item.item_name|upper }}' + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait', }
+            };
+            html2pdf().set(opt).from(elementClone).save();
+        });
+    });
+
+
+    // $(document).ready(function ($) {
+    //     $(document).on('click', '#pdflink', function (event) {
+    //         event.preventDefault();
+    //         var element = document.getElementById('item_get_detail_target');
+    //         var elementClone = element.cloneNode(true);
+
+    //         // Remove the specific sections from the cloned element
+    //         var elementsToRemove = elementClone.querySelectorAll('.removefields');
+    //         elementsToRemove.forEach(function (el) {
+    //             el.remove();
+    //         });
+            
+    //         var opt =
+    //         {
+    //             margin: 1,
+    //             filename: 'Item - '+ '{{ first_item.item_name|upper }}' + '.pdf',
+    //             image: { type: 'jpeg', quality: 0.98 },
+    //             html2canvas: { scale: 2 },
+    //             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait', }
+    //         };
+    //         html2pdf().set(opt).from(elementClone).save();
+    //     });
+    // });
+    function printfunction(){
+        var element = document.getElementById('item_get_detail_target');
+        var elementClone = element.cloneNode(true);
+
+        var elementsToRemove = elementClone.querySelectorAll('.removefields');
+        elementsToRemove.forEach(function (el) {
+            el.remove();
+        });
+        var filterElements = elementClone.querySelectorAll('.fa-filter, .dropdown-content');
+        filterElements.forEach(function (el) {
+            el.style.display = 'none'; // Hide filter-related elements
+        });
+        var rows = elementClone.querySelectorAll('.table tr');
+        rows.forEach(function (row) {
+            var lastColumn = row.lastElementChild;
+            lastColumn.parentNode.removeChild(lastColumn); // Remove last column
+        });
+
+        var printWindow = window.open('', '_blank');
+        printWindow.document.write('<html><head><title>Item Details</title>');
+        printWindow.document.write('<link rel="stylesheet" href="{% static "assets/css/styles.min.css" %}" />');
+        printWindow.document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />');
+        printWindow.document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">');
+        printWindow.document.write('  <link rel="shortcut icon" type="image/png" href="{% static "assets/images/logos/favicon.png" %}" />');
+        printWindow.document.write('<style>');
+        printWindow.document.write(document.body.querySelector('style').innerHTML); // Copy existing styles
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.body.appendChild(elementClone);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+            
+        printWindow.print();
+        
+    }
+</script>
+
+{% endblock  %}

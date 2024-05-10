@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        
+        .pdf-table th, .pdf-table td {
+            border: 1px solid #ddd;
+            padding-top: 3px;
+            padding-bottom: 2px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h2 style="text-align: center; color:red;">{{staff.company.company_name}}</h2>
+        <h4 style="text-align: center;">All Parties Report</h4>
+        <h5 style="text-align: center;">
+            <span id="sdate" style="color:black; text-align: center;">{{from}} &nbsp;</span>
+        </h5>
+
+        <table class="table-bordered transaction_table table text-dark pdf-table" id="myTable1">
+            <thead style="color: blue;">
+                <th>#</th>
+                <th>Party&nbsp;Name</th>
+                <th>Email</th>
+                <th>Phone No.</th>
+                <th>Receviable&nbsp;Balance</th>
+                <th>Payable&nbsp;Balance</th>
+                <th>Credit Limit</th>
+            </thead>
+            <tbody>
+                {% for p in parties %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{p.party_name}}</td>
+                        <td>{{p.email}}</td>
+                        <td>{{p.contact}}</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>{{p.creditlimit}}</td>
+                    </tr>
+                {% endfor %} 
+            </tbody>
+            <tfoot>
+                <td colspan="4" style="text-align: left;">Total&nbsp; Payable:</td>
+                <td colspan="3" style="text-align: right;">Total&nbsp; Receviable:</td>
+            </tfoot>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .pdf-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+    
+        .pdf-table th, .pdf-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h2 style="text-align: center; color:red;">{{staff.company.company_name}}</h2>
+        <h4 style="text-align: center;">Sale Order Item Report</h4>
+        <h5 style="text-align: center;">
+            <span id="sdate" style="color:black; text-align: center;">{{from}} &nbsp;</span>
+        </h5>
+
+        <table class="table-bordered transaction_table table text-dark mb-4 pdf-table" id="myTable1">
+            <thead style="color: blue;">
+                <th>#</th>
+                <th>Item&nbsp;Name</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </thead>
+            <tbody>
+                {% for result in parties  %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{ result.item_name }}</td>
+                        <td>{{ result.Quantity }}</td>
+                        <td>{{ result.Price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <td colspan="2">Total</td>
+                <td><span id="sale1">{{totalQ}}</span></td>
+                <td><span id="purchase1">{{totalP}}</span></td>
+            </tfoot>
+        </table>
+    </div>
+</body>
+</html>

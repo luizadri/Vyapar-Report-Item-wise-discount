@@ -1,0 +1,644 @@
+<!-- create by athul -->
+
+{% extends 'admin/adminbase.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    @media (max-width:768px) {
+       .h3{
+           font-size: 20px;
+       }
+       .h4{
+           font-size: 15px;
+       }
+   }
+</style>
+<body  style="background-color: rgba(176, 199, 205, 0.4);">
+    <div class="body-wrapper">
+        <div class="container-fluid">
+            <div class="container mt-5 mr-5 " style="background-color: white;">
+                <h1 class="text-center h1 mb-5 pt-5"
+                    style="font-family: 'Times New Roman', Times, serif;text-shadow: 2px 2px 4px #39d2e3;"><b>UPDATION
+                        DETAILS</b></h1>
+                <hr>
+                    {% if data.Modules_List %}
+                <center>
+                    {% if data.company_id.profile_pic %}
+                    <img class="img-thumbnail" width="30%" src="{{ data.company_id.profile_pic.url }}" alt="">
+                    {% else %}
+                    <img src="{% static 'assets/images/profile/user-1.jpg' %}" width="20%" wi class="img-thumbnail">
+                    {% endif %}
+                </center>
+                <h3 class="h3 text-center" style="font-weight: bold;text-transform: uppercase;"><b>{{data.company_id.company_name}}</b></h3>
+
+                <hr>
+                <div class="row p-5 pb-3">
+                    <div class="col-md-6">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b>Company Owner </h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="h4 "><b>: {{data.company_id.user.first_name}} {{data.company_id.user.last_name}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pb-3 pt-3">
+                    <div class="col-md-6">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b>Company Code </h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="h4 "><b>: {{data.company_id.Company_code}}</b></h4>
+                    </div>
+                </div>
+
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Email </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b>: {{data.company_id.user.email}}</b></h4>
+                    </div>
+                </div>
+
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Contact </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b>: {{data.company_id.contact}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Address </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : {{data.company_id.address}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> City</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : {{data.company_id.city}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> State </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : {{data.company_id.state}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b>Country</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b> : {{data.company_id.country}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Pincode</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b>: {{data.company_id.pincode}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Pan Number</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b> : {{data.company_id.pan_number}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> GST type </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : {{data.company_id.gst_type}}</b></h4>
+                    </div>
+                </div>
+                {% if data.company_id.gst_no != '' %}
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> GST Number</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b>: {{data.company_id.gst_no}}</b></h4>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Payment Terms </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b>: {% if data.company_id.dateperiod %}
+                            {{data.company_id.dateperiod.payment_terms_number}}
+                                {{data.company_id.dateperiod.payment_terms_value}}
+                                  
+                            {% else %}    
+                            1 Month Trial 
+                            {% endif %} </b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> End Date</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b> : {{data.company_id.End_date}}</b></h4>
+                    </div>
+                </div>
+                <hr>
+                <h3 class="h3 p-5 pb-3 pt-3"><b>Changed Modules</b></h3>
+                <hr>
+                <!-- <h3 class="h3 p-5 pb-3 pt-3"><b>Old Modules</b></h3>
+
+                <div class="row p-3" style="margin-left: 20px;">
+                    <div class="col-md-6">
+                        <h5>Sales</h5>
+
+                        {% if old_modules.sales_invoice != NULL %}
+                        <b>-> </b> Sale Invoices <br>
+                        {% endif %}
+
+
+                        {% if old_modules.Estimate != NULL %}
+                        <b>-> </b> Estimate/ Quotation <br>
+                        {% endif %}
+
+                        {% if old_modules.Payment_in != NULL %}
+                        <b>-> </b> Payment In <br>
+                        {% endif %}
+
+                        {% if old_modules.sales_order != NULL %}
+                        <b>-> </b> Sale Order <br>
+                        {% endif %}
+
+                        {% if old_modules.Delivery_challan != NULL %}
+                        <b>-> </b> Delivery Challan <br>
+                        {% endif %}
+
+                        {% if old_modules.sales_return != NULL %}
+                        <b>-> </b> Sale Return/ Cr. Note <br>
+                        {% endif %}
+
+                    </div>
+                    <div class="col">
+                        <h5>Purchase</h5>
+                        {% if old_modules.Purchase_bills != NULL %}
+                        <b>-> </b>Purchase Bills <br>
+                        {% endif %}
+                        {% if old_modules.Payment_out != NULL %}
+
+                        <b>-> </b> Payment Out <br>
+                        {% endif %}
+                        {% if old_modules.Purchase_order != NULL %}
+
+                        <b>-> </b>Purchase Order <br>
+                        {% endif %}
+                        {% if old_modules.Purchase_return != NULL %}
+
+                        <b>-> </b>Purchase Return/ Dr. Note <br>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="row p-3" style="margin-left: 20px;">
+                    <div class="col-md-6">
+                        <h5>Cash & Bank</h5>
+                        {% if old_modules.Bank_account != NULL %}
+                        <b>-> </b>Bank Accounts <br>
+                        {% endif %}
+                        {% if old_modules.Cash_in_hand != NULL %}
+                        <b>-> </b> Cash In Hand <br>
+                        {% endif %}
+                        {% if old_modules.cheques != NULL %}
+                        <b>-> </b> Cheques <br>
+                        {% endif %}
+                        {% if old_modules.Loan_account != NULL %}
+
+                        <b>-> </b> Loan Accounts <br>
+                        {% endif %}
+
+
+                    </div>
+                    <div class="col"></div>
+                </div> -->
+
+
+
+                
+
+
+                <!-- <h3 class="h3 p-5 pb-3 pt-3"><b>Changed Modules</b></h3> -->
+                <div class="row p-3" style="margin-left: 20px;">
+                    <div class="col-md-6">
+                        <h5><b><u>Sales</u></b></h5>
+                        {% if old_modules.sales_invoice != allmodules.sales_invoice %}
+                        {% if allmodules.sales_invoice  %}
+                        <b>-> </b> <b class="text-success">Sale Invoices </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger"> Sale Invoices</b> <br>
+                        {% endif %}
+                        {% endif %}
+
+                        {% if old_modules.Estimate != allmodules.Estimate %}
+                        {% if allmodules.Estimate  %}
+                        <b>-> </b> <b class="text-success">Estimate/ Quotation </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger"> Estimate/ Quotation</b> <br>
+                        {% endif %}
+                        {% endif %}
+
+                        
+                        {% if old_modules.Payment_in != allmodules.Payment_in %}
+                        {% if allmodules.Payment_in  %}
+                        <b>-> </b> <b class="text-success">Payment In  </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger"> Payment In </b> <br>
+                        {% endif %}
+                        {% endif %}
+                        
+
+                        {% if old_modules.sales_order != allmodules.sales_order %}
+                        {% if allmodules.sales_order  %}
+                        <b>-> </b> <b class="text-success">Sale Order  </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Sale Order</b> <br>
+                        {% endif %}
+                        {% endif %}
+                        
+                        {% if old_modules.Delivery_challan != allmodules.Delivery_challan %}
+                        {% if allmodules.Delivery_challan  %}
+                        <b>-> </b> <b class="text-success">Delivery Challan </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Delivery Challan</b> <br>
+                        {% endif %}
+                        {% endif %}
+                        
+                        {% if old_modules.sales_return != allmodules.sales_return %}
+                        {% if allmodules.sales_return  %}
+                        <b>-> </b> <b class="text-success">Sale Return/ Cr. Note</b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Sale Return/ Cr. Note</b> <br>
+                        {% endif %}
+                        {% endif %}
+
+                        
+
+                    </div>
+                    <div class="col">
+                        <h5><b><u>Purchase</u></b></h5>
+
+                        {% if old_modules.Purchase_bills != allmodules.Purchase_bills %}
+                        {% if allmodules.Purchase_bills  %}
+                        <b>-> </b> <b class="text-success">Purchase Bills</b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Purchase Bills</b> <br>
+                        {% endif %}
+                        {% endif %}
+                        
+
+                        {% if old_modules.Payment_out != allmodules.Payment_out %}
+                        {% if allmodules.Payment_out  %}
+                        <b>-> </b> <b class="text-success">Payment Out</b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Payment Out</b> <br>
+                        {% endif %}
+                        {% endif %}
+
+
+                        {% if old_modules.Purchase_order != allmodules.Purchase_order %}
+                        {% if allmodules.Purchase_order  %}
+                        <b>-> </b> <b class="text-success">Purchase Order</b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Purchase Order</b> <br>
+                        {% endif %}
+                        {% endif %}
+                        
+
+
+                        {% if old_modules.Purchase_return != allmodules.Purchase_return %}
+                        {% if allmodules.Purchase_return  %}
+                        <b>-> </b> <b class="text-success">Purchase Return/ Dr. Note </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Purchase Return/ Dr. Note </b> <br>
+                        {% endif %}
+                        {% endif %}
+                        
+                        
+
+                    </div>
+                </div>
+
+                <div class="row p-3" style="margin-left: 20px;">
+                    <div class="col-md-6">
+                        <h5><b><u>Cash & Bank</u></b></h5>
+
+                        {% if old_modules.Bank_account != allmodules.Bank_account %}
+                        {% if allmodules.Bank_account  %}
+                        <b>-> </b> <b class="text-success">Bank Accounts </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Bank Accounts</b> <br>
+                        {% endif %}
+                        {% endif %}
+
+                        {% if old_modules.Cash_in_hand != allmodules.Cash_in_hand %}
+                        {% if allmodules.Cash_in_hand  %}
+                        <b>-> </b> <b class="text-success">Cash In Hand </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Cash In Hand </b> <br>
+                        {% endif %}
+                        {% endif %}
+                        
+                        {% if old_modules.cheques != allmodules.cheques %}
+                        {% if allmodules.cheques  %}
+                        <b>-> </b> <b class="text-success">Cheques </b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Cheques </b> <br>
+                        {% endif %}
+                        {% endif %}
+
+                        {% if old_modules.Loan_account != allmodules.Loan_account %}
+                        {% if allmodules.Loan_account  %}
+                        <b>-> </b> <b class="text-success">Loan Accounts</b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">Loan Accounts </b> <br>
+                        {% endif %}
+                        {% endif %}
+
+                        {% if old_modules.Upi != allmodules.Upi %}
+                        {% if allmodules.Upi  %}
+                        <b>-> </b> <b class="text-success">UPI</b><br>
+                        {% else %}
+                        <b>-> </b><b class="text-danger">UPI </b> <br>
+                        {% endif %}
+                        {% endif %}
+
+
+                        
+                        
+
+
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <hr>
+                <center>
+                    <a href="{% url 'module_updation_ok' data.id %}" class="btn btn-primary mb-5"  style="width: 30%;"><b>Accept</b></a>
+                    <a href="{% url 'Admin_Reject_modules_list' data.id %}" class="btn btn-danger mb-5"  style="width: 30%;"><b>Reject</b></a>
+                </center>
+                
+                        
+                    
+                </div>
+
+                {% endif %}
+                {% if data.PaymentTerms_updation %}
+
+
+                <center>
+                    {% if data.distributor_id %}
+
+                        {% if data.distributor_id.img %}
+                        <img class="img-thumbnail" width="30%" src="{{ data.distributor_id.img.url }}" alt="">
+                        {% else %}
+                        <img src="{% static 'assets/images/profile/user-1.jpg' %}" width="20%" wi class="img-thumbnail">
+                        {% endif %}
+
+                    {% else %}
+
+                        {% if data.company_id.profile_pic %}
+                        <img class="img-thumbnail" width="30%" src="{{ data.company_id.profile_pic.url }}" alt="">
+                        {% else %}
+                        <img src="{% static 'assets/images/profile/user-1.jpg' %}" width="20%" wi class="img-thumbnail">
+                        {% endif %}
+
+                    {% endif %}
+                </center>
+                <h2 class="h2 text-center mt-2" style="text-transform: uppercase;"><b>
+                    {% if data.distributor_id %}
+                        {{data.distributor_id.user.first_name}}{{data.distributor_id.user.last_name}}
+                    {% else %}
+                        {{data.company_id.company_name}}
+                    {% endif %}    
+                    </b></h2>
+
+                <hr>
+                {% if data.company_id %}
+                <div class="row p-5 pb-3">
+                    
+                    <div class="col-md-6">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b>Company Owner </h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="h4 "><b>: {{data.company_id.user.first_name}} {{data.company_id.user.last_name}}</b></h4>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row p-5 pb-3 pt-3">
+                    <div class="col-md-6">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b>
+                            {% if data.company_id %}
+                                Company Code 
+                            {% else %}    
+                                Distributor Code
+                            {% endif %}    
+                        </h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="h4 "><b>: 
+                            {% if data.company_id %}
+                                {{data.company_id.Company_code}}
+                            {% else %}    
+                                {{data.distributor_id.distributor_id}}
+                            {% endif %}    
+                        </b></h4>
+                    </div>
+                </div>
+
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Email </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b>: 
+                            {% if data.company_id %}
+                                {{data.company_id.user.email}}
+                            {% else %}    
+                                {{data.distributor_id.user.email}}
+                            {% endif %}
+                        </b></h4>
+                    </div>
+                </div>
+
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Contact </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b>:
+                            {% if data.company_id %}
+                                {{data.company_id.contact}}
+                            {% else %}    
+                                {{data.distributor_id.contact}}
+                            {% endif %}
+                        </b></h4>
+                    </div>
+                </div>
+                {% if data.company_id %}
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Address </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : 
+                        
+                            {{data.company_id.address}}
+                        
+                        </b></h4>
+                    </div>
+                </div>
+                
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> City</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : {{data.company_id.city}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> State </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : {{data.company_id.state}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b>Country</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b> : {{data.company_id.country}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Pincode</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b>: {{data.company_id.pincode}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Pan Number</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b> : {{data.company_id.pan_number}}</b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> GST type </h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"><b> : {{data.company_id.gst_type}}</b></h4>
+                    </div>
+                </div>
+                {% if data.company_id.gst_no  %}
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> GST Number</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b>: {{data.company_id.gst_no}}</b></h4>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Payment Terms ( <b style="color: red;">Current</b>)</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b style="color: red;">:
+                            {% if data.company_id %}
+                                {% if data.company_id.dateperiod %}
+                                {{data.company_id.dateperiod.payment_terms_number}}
+                                    {{data.company_id.dateperiod.payment_terms_value}}
+                                      
+                                {% else %}    
+                                1 Month Trial 
+                                {% endif %}    
+                            {% else %} 
+                               
+                                
+                                {{data.distributor_id.payment_term.payment_terms_number}}
+                                {{data.distributor_id.payment_term.payment_terms_value}}
+                            {% endif %}
+                            
+                            </b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> Payment Terms ( <b style="color: green;">New</b> )</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b  style="color: green;">:
+                                
+                                
+                                {{data.PaymentTerms_updation.Payment_Term.payment_terms_number}}
+                                {{data.PaymentTerms_updation.Payment_Term.payment_terms_value}}
+                            
+                            
+                            </b></h4>
+                    </div>
+                </div>
+                <div class="row p-5 pt-3 pb-3">
+                    <div class="col">
+                        <h5 class="h5"><b style="margin-right: 10px;">-> </b> End Date</h5>
+                    </div>
+                    <div class="col">
+                        <h4 class="h4"> <b> : 
+                            {% if data.company_id %}
+                                {{data.company_id.End_date}}
+                                
+                            {% else %}    
+                                
+                                {{data.distributor_id.End_date}}
+                                
+                            {% endif %}
+                           
+                        </b></h4>
+                    </div>
+                </div>
+                <hr>
+               
+                <center>
+                    <a href="{% url 'Admin_Accept_payment_term' data.id %}" class="btn btn-primary mb-5"  style="width: 30%;"><b>Accept</b></a>
+                    <a href="{% url 'Admin_Reject_payment_term' data.id %}" class="btn btn-danger mb-5"  style="width: 30%;"><b>Reject</b></a>
+                </center>
+                
+                        
+                    
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</body>            
+
+{% endblock content %}

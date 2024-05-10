@@ -1,0 +1,125 @@
+<!-- create by athul -->
+
+{% extends 'admin/adminbase.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    /* body{
+        background-color: rgb(193, 221, 245);
+    } */
+    body{
+      background-color: rgba(176, 199, 205, 0.4);
+    }
+    @media screen and (min-width: 768px) {
+        .card{
+            width: 80%;
+        }
+       
+    }
+    
+    h6{
+      color: white;
+    }
+    h6:hover{
+      color: #16c7ff;
+    
+
+    }
+    .fa:hover{
+      color: #16c7ff;
+      
+      animation: swing ease-in-out 0.5s 1 alternate;
+      
+    }
+    .ti:hover{
+      color: #16c7ff;
+      
+      animation: swing ease-in-out 0.5s 1 alternate;
+      
+    }
+    #col1:hover{
+      color: #16c7ff;
+      text-shadow: 0px 0px 10px rgba(22, 199, 255, 0.5);
+      cursor: pointer;
+     
+
+
+    }
+    
+    #col2:hover{
+      color: #16c7ff;
+      text-shadow: 0px 0px 10px rgba(22, 199, 255, 0.5);
+      cursor: pointer;
+
+    }
+    .card .fa:hover{
+      color: #16c7ff;
+      text-shadow: 0px 0px 10px rgba(22, 199, 255, 0.5);
+      cursor: pointer;
+    }
+    .card h5:hover{
+      
+      text-shadow: 0px 0px 10px rgba(22, 199, 255, 0.5);
+      cursor: pointer;
+    }
+    
+
+</style>
+
+
+
+<div class="body-wrapper">
+   <div class="container-fluid" >
+
+    
+
+    <div class="row mt-5">
+
+    {% for c in client %} 
+   {% for d in data %}
+   {% for d1 in d %}
+   {% if c.id == d1 %}
+   {% if c.Log_Action  == 1 %}
+   
+     
+
+
+    <div class="col-md-6">
+      <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" >
+        <div class="card-body">
+
+
+          
+
+          <div class="row">
+            <div class="col-md-9">
+              <a href="{% url 'Dclients_list' c.id %}">
+              <h5 class="card-title mb-9 fw-semibold"><b>{{c.user.first_name}} {{c.user.last_name}}</b></h5>
+            </a>
+              
+
+            </div>
+            <div class="col">
+              <a href="{% url 'Dclients_list' c.id %}">
+              <i class="fa fa-users text-primary" id="fa" style="font-size: 2em;"></i>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+    
+  
+ 
+  </div>
+
+
+{% endblock content %}

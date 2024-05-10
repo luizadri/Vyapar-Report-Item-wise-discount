@@ -1,0 +1,47 @@
+<!-- create by athul -->
+
+{% extends 'distributor/distributor_base.html' %}
+
+
+{% block content %}
+{% load static %}
+<style>
+       @media (max-width:768px) {
+        .row{
+            margin-left: 10px !important;
+            margin-right: 10px !important;
+        }
+        .h4{
+            font-size: 15px !important;
+            margin-left: 5px !important;
+        }
+       }
+</style>
+<body  style="background-color: rgba(176, 199, 205, 0.4);">
+    <div class="body-wrapper">
+        <div class="container-fluid">
+            {% if data %}
+            {% for d in data %} 
+            
+            <div class="row p-4 m-5" style="background-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <h6><b>{{d.Title}}</b></h6>
+                <hr>
+                <h4 class="h4" style="margin-left: 60px;"><b style="margin-right: 10px;">{{d.Discription}}.......
+                    {% if d.company_id %}
+                    <a href="{% url 'distributor_module_updation' d.id %}" style="font-size: 15px;">View More</a>
+                    {% else %}
+                    <a href="{% url 'distributor_profile'  %}" style="font-size: 15px;">View More</a>
+                    {% endif %}
+                </h4>
+            </div>
+            
+            {% endfor %}
+            {% else %}
+
+            <center><img src="{% static 'images\no-data-file.png' %}" alt="" class="mt-5 pt-5"></center>
+            {% endif %}
+        </div>
+    </div>        
+</body>
+
+{% endblock content %}

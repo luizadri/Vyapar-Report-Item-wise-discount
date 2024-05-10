@@ -1,0 +1,657 @@
+<!-- create by athul -->
+<!-- updated by Nithya-->
+
+{% extends 'company/src/html/base.html' %}
+
+{% block content %}
+{% load static %}
+
+<style>
+  .bs {
+    box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);
+  }
+
+  .bs_sm {
+    box-shadow: inset 2px 2px 5px 3px rgba(0, 0, 0, 0.199);
+  }
+
+  .tb {
+    color: black;
+  }
+
+  .tg {
+    color: rgb(0, 140, 7);
+  }
+
+  .tr {
+    color: rgb(218, 0, 0);
+  }
+
+  .btn_add {
+    background-color: orange;
+    color: black;
+  }
+
+  .btn_add:hover {
+    background-color: rgb(234, 152, 0);
+    color: black;
+  }
+
+  ::-webkit-scrollbar {
+    display: none
+  }
+  select option:hover{
+    background-color: black;
+  }
+
+  #item_unit_value, #modal_closing {
+    height: 38px; /* Adjust the height as needed */
+  }
+</style>
+
+<div class="body-wrapper">
+  <br><br><br>
+  <div class="row p-0 m-0">
+    <div class="col-12  p-0 m-0" >
+      <div class=" bg-light bg-light pb-0 mb-0 p-2" style="height:100%;width:100%">
+        <div class="d-flex justify-content-center pt-4">
+          <a href="{% url 'add_salesinvoice' %}" id="b1" class="btn  text-white"
+            style="margin-right: 10px; background-color: rgb(252, 3, 3,0.7);border-radius: 20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Add
+            Sale <i class="fa fa-plus"></i></a>
+          <a href="{% url 'add_purchasebill' %}" id="b2" class="btn  text-white"
+            style="margin-right: 10px;background-color: rgba(3, 161, 252, 0.7);border-radius: 20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Add
+            Purchase <i class="fa fa-plus"></i></a>
+          <a href="" id="b3" class="btn text-primary"
+            style="border-radius: 20px;border: 1px solid rgb(40, 12, 222);background-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Add
+            More <i class="fa fa-plus"></i></a>
+        </div>
+        <p></p>
+
+
+
+        <form action="{% url 'item_update' item.id %}" method="post">
+          {% csrf_token %}
+                  <div class="position-relative">
+                    <div class="position-absolute end-0">
+                      <div class="d-flex pt-3 pe-3">
+                        {% comment %} <span class="fa fa-cog fs-5 tb p-1 pe-3"></span> {% endcomment %}
+                        <a href="{% url 'items_list' item.id %}"><span class="fa fa-times fs-5 tb p-1"></span></a>
+                      </div>
+                    </div>
+                  </div>
+                 
+                  <div class="bg-light bs p-4 rounded mb-5">
+                      <div class="d-md-flex d-sm-block">
+                        <h5><strong class="fw-bolder">EDIT ITEM</strong></h5>
+                        <div class="form-check form-switch d-flex">
+                          <label id="lbl1" class="form-check-label fw-bolder" for="flexSwitchCheckChecked">PRODUCTS</label>
+                          <input class="form-check-input fs-5 ms-2 me-2" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                            >
+                          <label id="lbl2" class="form-check-label fw-bolder" for="flexSwitchCheckChecked">SERVICES</label>
+                        </div>
+                      </div>
+                      <!-- {% for message in messages %}
+                        <div class="alert alert-danger text-center" role="alert">{{ message }}</div>
+                      {% endfor %} -->
+                    <br>
+                    <div id="main_form_div">
+                      <div class="row" style="margin-left: -1vh;">
+                        <div class="col-md-4">
+                          <input style="color: black;" class="form-control border-secondary fw-bolder checkitemhsn" type="text" placeholder="ITEM NAME" autocomplete="off" name="item_name" id="item_name" required value="{{ item.item_name|capfirst }}">
+
+                        </div>
+                        <div class="col-md-4">
+                          <div style="position: relative;">
+                            <input style="color: black;" class="form-control border-secondary ms-2 fw-bolder checkitemhsn" type="number" placeholder="ITEM HSN" name="item_hsn" id="item_hsn" oninput="validateInput()" required value="{{ item.item_hsn }}">
+                            <span id="validd" hidden></span>
+                            <span id="hsn-validation" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%);"></span>
+                          </div>
+                        </div>
+                        <div class="col-md-4 d-flex" id="ko">
+                            <!-- {{item.item_unit}}
+                            {{item_units}} -->
+                          <select class="form-control ms-2 border-dark bg-light me-2 fw-bolder text-uppercase" id="item_unit_value" name="item_unit" required>
+                            <!-- <option value="{{ item.unit_name }}>{{ item.unit_name|upper }}</option> -->
+                            <option value="NOS"{% if item.item_unit == 'NOS' %}selected{% endif %}>NOS</option>
+                            <option value="BOX"{% if item.item_unit == 'BOX' %}selected{% endif %}>BOX</option>
+                            <option value="PACKET"{% if item.item_unit == 'PACKET' %}selected{% endif %}>PACKET</option>
+                            {% if item_units %}
+                                {% for i in item_units %}
+                                <option value="{{ i.unit_name }}"{% if item.item_unit|lower == i.unit_name|lower %}selected{% endif %}>{{ i.unit_name|upper }}</option>
+                                {% endfor %}
+                            {% endif %}
+                            <option id="load_new_unit" hidden value=""></option>
+                          </select>
+                          <button id="modal_closing" type="button" class="btn bg-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"><span class="fa fa-plus"></span></button>
+                        </div>
+                      </div>
+                      <div>
+                          <p></p>
+                          <hr class="p-0 m-0">
+                          <div style="background-color: rgba(0, 195, 255, 0.205);" class="p-3 pb-0 mb-0">
+                            <div class="">
+                              <div class="row pb-0 mb-0">
+                                <div id="prc_" class="col text-center pb-2" ><a class="fw-bolder fs-4"
+                                    style="color: gray;" >PRICING</a></div>
+                                <div id="stk_" class="col text-center pb-2" ><a class="fw-bolder fs-4"
+                                    style="color: gray;" >STOCKS</a></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- pricing template start -->
+                          <div id="pricing_template" style="background-color: rgba(144, 211, 117, 0.098);">
+                            <div class="row">
+                              <div  class="col-sm-12 col-md-1">
+
+                              </div>
+                              <div class="col-sm-12 col-md-10 pb-4">
+                                  <div class="text- pt-5">
+                                    <label style="user-select: none;" class="fs-4 fw-bolder tb" for="item_tax_1">Taxable</label>
+                                    <input id="item_tax_1" class="me-3" type="radio" name="item_tax_result" required>
+                                    <label style="user-select: none;" class="fs-4 fw-bolder tb" for="item_tax_2">Non Taxable</label>
+                                    <input id="item_tax_2" type="radio" name="item_tax_result" required checked>
+                                    <input id="taxable_result" type="text" name="item_taxable" hidden>
+                                  </div>
+                                  <br>
+                                  <div hidden id="taxable_hide" class="mb-3">
+                                    <div class="d-flex">
+                                      <div class="w-50 me-3">
+                                        <label class="col-form-label tb fs-3" for="">GST</label><br>
+                                        <select style="color: black;background-color: white;" class="form-control fw-bolder border-secondary fs-3" id="" placeholder="GST" name="item_gst" >
+                                            <option value="GST0[0%]"{% if item.item_gst == 'GST0[0%]' %}selected{% endif %}>GST0[0%]</option>
+                                            <option value="GST3[3%]"{% if item.item_gst == 'GST3[3%]' %}selected{% endif %}>GST3[3%]</option>
+                                            <option value="GST5[5%]"{% if item.item_gst == 'GST5[5%]' %}selected{% endif %}>GST5[5%]</option>
+                                            <option value="GST12[12%]"{% if item.item_gst == 'GST12[12%]' %}selected{% endif %}>GST12[12%]</option>
+                                            <option value="GST18[18%]"{% if item.item_gst == 'GST18[18%]' %}selected{% endif %}>GST18[18%]</option>
+                                            <option value="GST28[28%]"{% if item.item_gst == 'GST28[28%]' %}selected{% endif %}>GST28[28%]</option>
+                                        </select>
+                                      </div>
+                                      <div class="w-50">
+                                        <label class="col-form-label tb fs-3" for="">IGST</label><br>
+                                        <select style="color: black;background-color: white;" class="form-control fw-bolder border-secondary tb fs-3" id="" placeholder="GST" name="item_igst" >
+                                            <option value="IGST0[0%]"{% if item.item_igst == 'IGST0[0%]' %}selected{% endif %}>IGST0[0%]</option>
+                                            <option value="IGST3[3%]"{% if item.item_igst == 'IGST3[3%]' %}selected{% endif %}>IGST3[3%]</option>
+                                            <option value="IGST5[5%]"{% if item.item_igst == 'IGST5[5%]' %}selected{% endif %}>IGST5[5%]</option>
+                                            <option value="IGST12[12%]"{% if item.item_igst == 'IGST12[12%]' %}selected{% endif %}>IGST12[12%]</option>
+                                            <option value="IGST18[18%]"{% if item.item_igst == 'IGST18[18%]' %}selected{% endif %}>IGST18[18%]</option>
+                                            <option value="IGST28[28%]"{% if item.item_igst == 'IGST28[28%]' %}selected{% endif %}>IGST28[28%]</option>
+                                          </select>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="d-flex">
+                                    <div class="w-50 me-3">
+                                      <label class="tb col-form-label" for="pur_price">SALES PRICE</label><br>
+                                      <input style="color: black;background-color: white;" id="sal_price" class="form-control fw-bolder border-secondary  fs-3" type="number" placeholder="Sales Price here" name="item_sale_price" required value="{{ item.item_sale_price }}">
+                                    </div>
+                                    <div class="w-50">
+                                      <label class="tb col-form-label" for="">PURCHASE PRICE</label><br>
+                                      <input style="color: black;background-color: white;" id="pur_price" class="form-control fw-bolder border-secondary  fs-3" type="number" placeholder="Purchase Price here" name="item_purchase_price" required value="{{ item.item_purchase_price }}">
+                                    </div>
+                                  </div>
+                                  <div class="text-start mt-5">
+                                    <button id="next_btn" class="btn btn-primary bg-gradient" type="button">Next</button>
+                                  </div>
+                              </div>
+                              <div  class="col-sm-12 col-md-1">
+
+                              </div>
+                            </div>
+                          </div>
+                          <!-- pricing template end -->
+
+
+                          <!-- stock template start -->
+                          <div hidden id="stock_template"style="background-color: rgba(144, 211, 117, 0.098);">
+                            <div class="row">
+                              <div  class="col-sm-12 col-md-1">
+
+                              </div>
+                              <div class="col-sm-12 col-md-10 pb-4">
+                                <br><br>
+                                  <div class="d-flex">
+                                    <div class="w-50 me-3">
+                                      <label class="tb col-form-label" for="opn_stock_">OPENING STOCK</label><br>
+                                      <input style="color: black;background-color: white;" id="opn_stock_" class="form-control fw-bolder border-secondary  fs-3" type="number" placeholder="Opening Stock here" name="item_opening_stock" value="{% if item.item_opening_stock %}{{ item.item_opening_stock }}{% else %}0{% endif %}">
+                                    </div>
+                                    <div id="at_price_div" style="visibility: hidden;" class="w-50">
+                                      <label class="tb col-form-label" for="at_price">AT PRICE</label><br>
+                                      <input style="color: black;background-color: white" id="at_price" class="form-control fw-bolder border-secondary  fs-3" type="number" placeholder="At Price here" name="item_at_price" value="{% if item.item_at_price %}{{ item.item_at_price }}{% else %}0{% endif %}">
+                                    </div>
+                                  </div>
+                                  <br>
+                                  <div class="d-flex">
+                                    <div class="w-50 me-3">
+                                      <label class="tb col-form-label" for="date_">DATE</label><br>
+                                      <input style="color: black;background-color: white" id="date_" class="form-control fw-bolder border-secondary  fs-3" type="date" placeholder=""required name="item_date" value="{% if item.item_date %}{{ item.item_date|date:'Y-m-d'}}{% else%}{{tod|date:'Y-m-d'}}{% endif %}">
+                                    </div>
+                                    <div class="w-50">
+                                      <label class="tb col-form-label" for="at_price">MINIMUM STOCK TO MAINTAIN</label><br>
+                                      <input style="color: black;background-color: white" id="min_stock" class="form-control fw-bolder border-secondary  fs-3" type="number" placeholder="Purchase Price here" name="item_min_stock_maintain" value="{% if item.item_min_stock_maintain %}{{ item.item_min_stock_maintain }}{% else %}0{% endif %}" >
+                                    </div>
+                                  </div>
+                                  <div class="text-start mt-5">
+                                    <button id="prev_btn" class="btn btn-primary bg-gradient  me-3" type="button">PREVIOUS</button>
+                                    <button id="save_and_next" class="btn btn-primary bg-gradient  me-3" type="submit" name="save_and_next" value="save_and_next">SAVE AND NEXT</button>
+                                    <button id="save" class="btn btn-primary bg-gradient" type="submit"name="save" value="save">SAVE</button>
+                                  </div>
+                              </div>
+                              <div  class="col-sm-12 col-md-1">
+
+                              </div>
+                              
+                            </div>
+                          </div>
+                          <!-- stock template end -->
+                           
+                      </div>
+
+
+                    </div>
+                  </div>
+        </form>
+
+        <!-- modal start -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">ADD UNIT</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body mb-1 pb-1">
+                <!-- <form class="mb-0" action="{% url 'item_unit_create' %}" method="POST"></form> -->
+                <form class="mb-0" action="" method="POST" id="unit_form">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">UNIT</label>
+                    <input type="text" class="form-control border-dark" id="item_unit_name_id" placeholder="ENTER UNIT HERE.." name="item_unit_name" required>
+                  </div>
+                  <div class="m-0 text-center">
+                    <label for="message-text" class="col-form-label  text-secondary fw-lighter">Example : PCS/BOX/LITER</label>
+                    <!-- <textarea class="form-control" id="message-text"></textarea> -->
+                  </div>
+                  <input hidden id="submit_unit_creation" type="submit">
+                </form>
+              </div>
+              <div class="modal-footer d-flex justify-content-center mt-1">
+                <button id="modal_cls_btn" type="button" class="btn btn-secondary ps-5 pe-5" data-bs-dismiss="modal">Close</button>
+                <button id="add_btn_" type="button" class="btn btn-primary ps-5 pe-5" onclick="submit_unit_creation_fn()">ADD</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- modal end -->
+
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+ $(document).on("click", "#save", function(){
+      console.log('save ')
+
+        $('.error-message').remove();
+
+        var itemName = $('#item_name').val();
+        var itemHsn = $('#item_hsn').val();
+        var itemUnit = $('#item_unit_value').val();
+        var taxable = $('input[name="item_tax_result"]:checked').val();
+        var salesPrice = $('#sal_price').val();
+        var purchasePrice = $('#pur_price').val();
+        console.log(itemUnit == '')
+
+            if (!itemName) $('#item_name').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter item name.</div></div>');
+            if (!itemHsn) $('#item_hsn').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter item HSN.</div></div>');
+            // if (itemUnit == '') $('#modal_closing').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please select item unit.</div></div>');
+            //         if (itemUnit == '') {
+            //     var $unitContainer = $('<div class="error-container"></div>');
+            //     $unitContainer.append('<div class="error-message fw-bolder" style="color:red;">Please select item unit.</div>');
+            // }
+            if (!salesPrice) $('#sal_price').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter sales price.</div></div>');
+            if (!purchasePrice) $('#pur_price').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter purchase price.</div></div>');
+
+  });
+
+  $(document).on("click", "#next_btn", function(){
+      console.log('save ')
+
+        $('.error-message').remove();
+
+        var salesPrice = $('#sal_price').val();
+        var purchasePrice = $('#pur_price').val();
+        if (!salesPrice) $('#sal_price').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter sales price.</div></div>');
+        if (!purchasePrice) $('#pur_price').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter purchase price.</div></div>');
+
+  });
+
+  
+
+
+  $(document).on("click", "#save_and_next", function(){
+      console.log('save and next')
+
+        $('.error-message').remove();
+
+        var itemName = $('#item_name').val();
+        var itemHsn = $('#item_hsn').val();
+        var itemUnit = $('#item_unit_value').val();
+        var taxable = $('input[name="item_tax_result"]:checked');
+        var salesPrice = $('#sal_price').val();
+        var purchasePrice = $('#pur_price').val();
+
+            if (!itemName) $('#item_name').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter item name.</div></div>');
+            if (!itemHsn) $('#item_hsn').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter item HSN.</div></div>');
+            // if (itemUnit == '') $('#modal_closing').after('<div class="error-message fw-bolder" style="color:red;">Please select item unit.</div>');
+            if (!salesPrice) $('#sal_price').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter sales price.</div></div>');
+            if (!purchasePrice) $('#pur_price').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter purchase price.</div></div>');
+
+  });
+
+  function validateInput() {
+        // Get the value entered by the user
+        var inputValue = document.getElementById("item_hsn").value;
+        console.log("Input value:", inputValue);
+        const validationLabel = document.getElementById("hsn-validation");
+        //const saveAndNextButton = document.getElementById("save_and_next");
+        //const saveButton = document.getElementById("save");
+
+        if (inputValue.length >= 6) {
+          console.log("Input value is valid.");
+            // Display a checkmark
+            validationLabel.innerHTML = "&#10004;"; // Checkmark symbol
+            validationLabel.style.color = "green";
+            //saveAndNextButton.disabled = false;
+            //saveButton.disabled = false;
+            //saveAndNextButton.removeAttribute("title");
+            //saveButton.removeAttribute("title");
+
+        } else {
+            // Display a cross mark
+// console.log("Input value is not valid.");
+            validationLabel.innerHTML = "&#10060;"; // Cross mark symbol
+            validationLabel.style.color = "red";
+            //saveAndNextButton.disabled = true;
+            //saveButton.disabled = true;
+            //saveAndNextButton.title = "Item HSN must have at least 6 digits.";
+            //saveButton.title = "Item HSN must have at least 6 digits.";
+        }
+    }
+
+    $(document).ready(function(){
+            if($('#opn_stock_').val()>0)
+            {
+            $('#at_price_div').css({'visibility':'visible',
+                                    'transition':'all 0.2s linear'})
+            }
+            else {
+            $('#at_price_div').css({'visibility':'hidden',
+                                    'transition':'all 0.2s linear'})
+            $('#at_price').val('')
+            }
+    })
+
+  $(document).on("submit","#unit_form",function(e){
+    e.preventDefault();
+  $.ajax({
+    
+    type : 'POST',
+    url:"{% url 'item_unit_create' %}",
+
+    data:{
+      item_unit_name : $("#item_unit_name_id").val(),
+        
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+        
+      },
+    
+      success: function() {
+        
+      },
+      
+  });  
+  $('#modal_cls_btn').click()
+  var a = ''+$('#item_unit_name_id').val()
+  a.toUpperCase()
+  $('#load_new_unit').val(a)
+  $('#load_new_unit').text(a) 
+  $('#load_new_unit').prop('selected',true) 
+  $('#load_new_unit').attr('hidden',false)
+});
+  $(document).ready(function () {
+    if ($('#flexSwitchCheckChecked').prop('checked')) {
+      $('#lbl2').css({ 'color': 'blue' })
+    }
+    else{
+      $('#lbl1').css({ 'color': 'blue' })
+    }
+    $('#flexSwitchCheckChecked').on('change load', function () {
+      if ($('#flexSwitchCheckChecked').prop('checked')) {
+        $('#lbl2').css({ 'color': 'blue' })
+        $('#lbl1').css({ 'color': 'inherit' })
+      }
+      else {
+        $('#lbl1').css({ 'color': 'blue' })
+        $('#lbl2').css({ 'color': 'inherit' })
+      }
+    })
+  })
+  $(document).ready(function(){
+    $('#item_tax_1').on('click',function(){
+      if($(this).prop('checked'))
+      {
+        $('#taxable_hide').attr('hidden',false)
+      }
+    })
+  })
+  // page loading start
+  $(document).ready(function(){
+    $('#item_tax_2').on('click',function(){
+      if($(this).prop('checked'))
+      {
+        $('#taxable_hide').attr('hidden',true)
+      }
+    })
+  })
+  $(document).ready(function(){
+    $('#prc_').css({'border-bottom': '3px solid rgba(0, 0, 0, 0.548)'})
+    $('#stk_ a').removeClass('text-dark')
+    $('#prc_ a').addClass('text-dark')
+    $('#stk_').css({'border-bottom': 'none'})
+    $('#pricing_template').attr('hidden',false)
+
+
+    $('#prc_').on('click',function(){
+      $(this).css({'border-bottom': '3px solid rgba(0, 0, 0, 0.548)'})
+      $('#stk_ a').removeClass('text-dark')
+      $('#prc_ a').addClass('text-dark')
+      $('#stk_').css({'border-bottom': 'none'})
+      $('#pricing_template').attr('hidden',false)
+      $('#stock_template').attr('hidden',true)
+    })
+  })
+  $(document).ready(function(){
+    $('#stk_').on('click',function(){
+      $('#stk_').css({'border-bottom': '3px solid rgba(0, 0, 0, 0.548)'})
+      $('#prc_ a').removeClass('text-dark')
+      $('#stk_ a').addClass('text-dark')
+      $('#prc_').css({'border-bottom': 'none'})
+      $('#pricing_template').attr('hidden',true)
+      $('#stock_template').attr('hidden',false)
+    })
+  })
+  $(document).ready(function(){
+    $('#next_btn').on('click',function(){
+      $('#stk_').click()
+    })
+  })
+  $(document).ready(function(){
+    $('#prev_btn').on('click',function(){
+      $('#prc_').click()
+    })
+  })
+  // $(document).ready(function(){
+  //   $('#prc_').on('click',function(){
+  //     alert('asdsad')
+  //   })
+  // })
+  // $(document).ready(function(){
+  //   $('#prc_').on('click',function(){
+  //     alert('asdsad')
+  //   })
+  // })
+  // page loading end
+  $('#opn_stock_').on('keyup click',function(){
+    if($(this).val()>'0')
+    {
+      $('#at_price_div').css({'visibility':'visible',
+                              'transition':'all 0.2s linear'})
+    }
+    else{
+      $('#at_price_div').css({'visibility':'hidden',
+                              'transition':'all 0.2s linear'})
+      $('#at_price').val('')
+    }
+  })
+
+
+  $(document).ready(function(){
+    $('#item_tax_1').on('click',function(){
+      $('#taxable_result').val('Taxable')
+    })
+  })
+  $(document).ready(function(){
+    $('#item_tax_2').on('click',function(){
+      $('#taxable_result').val('Non Taxable')
+    })
+  })
+  function submit_unit_creation_fn()
+  {
+    $('#submit_unit_creation').click()
+  }
+  // set today start
+//   $(document).ready(function(){
+//         var currentDate = new Date();
+//         var year = currentDate.getFullYear();
+//         var month = String(currentDate.getMonth() + 1).padStart(2, "0");
+//         var day = String(currentDate.getDate()).padStart(2, "0");
+//         var formattedDate = year + "-" + month + "-" + day;
+//         $("#date_").val(formattedDate);
+//     })
+    // set today end
+
+</script>
+
+<script>
+  $(document).on("change", function(){
+     $('.error-container').remove();
+ });
+
+ 
+ $(document).on("change", ".checkitemhsn", function(){
+  console.log('hi')
+
+  if($('#item_name').val() && $('#item_hsn').val()){
+      console.log('no')
+      $.ajax({
+          url: "{% url 'newItemCheck' %}",
+          type: "POST",
+          dataType: "json",
+          data: {
+              itemname : $("#item_name").val(),
+              hsn : $("#item_hsn").val(),
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+          },
+          success: function(data) {
+              if (data.erroritemhsn) {
+                  $('#item_name').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">' + data.erroritemhsn + '.</div></div>');
+              } 
+              else if(data.erroritem){
+                  $('#item_name').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">' + data.erroritem + '.</div></div>');
+              }
+              else if(data.errorhsn){
+                  $('#item_hsn').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">' + data.errorhsn + '.</div></div>');
+              }
+              else {
+                  console.log(data);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+      });
+  }
+  else {
+
+      if (!$('#item_name').val()) {
+              console.log('Item name is missing, adding error container');
+              $('#item_name').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter item name.</div></div>');
+          }
+
+     if (!$("#item_hsn").val()) {
+            console.log('HSN is missing, adding error container');
+            $('#item_hsn').after('<div class="error-container"><div class="error-message fw-bolder" style="color:red;">Please enter hsn number.</div></div>');
+        }
+
+    }
+});
+</script>
+
+
+
+<script>
+    //   #flexSwitchCheckChecked:checked #lbl1{
+    //   color: blue
+    // }
+
+     
+    
+    $(document).ready(function(){
+        if('{{ item.item_taxable }}'==='Taxable')
+        {
+          $('#item_tax_1').click()
+        }
+        else{
+          $('#item_tax_2').click()
+        }
+    })
+    function confirm_update(Id)
+      {
+          swal({
+              title: "Confirmation !",
+              text: "Do you want to save the changes?",
+              icon: "info",
+              buttons: true,
+              dangerMode: true,
+          })
+          .then((willDelete) => {
+              if (willDelete) {
+                  swal({
+                      title: "Updated !",
+                      text: "Item Updated Successfilly!",
+                      icon: "success",
+                      buttons: false,
+                  })
+                  // 
+                  .then((willDelete) => {
+                  if (willDelete) {
+                      // Redirect to the delete_teacher view with the teacher's ID
+                      $('#confirm_update_button').click()
+                      
+                  } else {
+                      $('#confirm_update_button').click()
+                  }
+              });
+                  // 
+              } else {
+                  swal("Action Cancelled!");
+              }
+          });
+      }
+  </script>
+{% endblock %}
