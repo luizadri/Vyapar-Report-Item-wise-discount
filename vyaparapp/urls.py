@@ -538,6 +538,12 @@ urlpatterns = [
     path('purchasebill_checkgphn', views.purchasebill_checkgphn, name='purchasebill_checkgphn'),
     
     path('get_available_invoices/', views.get_available_invoices, name='get_available_invoices'),
+
+    # Report-Item wise discount Adrian
+
+    path('Item_Wise_Discount_Report/', views.Item_Wise_Discount_Report, name='Item_Wise_Discount_Report'),
+
+
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     

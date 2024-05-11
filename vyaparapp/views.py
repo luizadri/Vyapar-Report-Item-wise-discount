@@ -16075,3 +16075,30 @@ def chequeEmail(request):
             messages.error(request, f'{e}')
             return redirect(cheque_statement)
 #End
+
+# Report-Item wise discount Adrian
+
+
+def Item_Wise_Discount_Report(request):
+  id=request.session.get('staff_id')
+  staff=staff_details.objects.get(id=id)
+  cmp = company.objects.get(id=staff.company.id) 
+  allmodules= modules_list.objects.get(company=cmp,status='New')
+  sales_data=SalesInvoiceItem.objects.filter(company=staff.company)
+  distinct_items_with_discount = SalesInvoiceItem.objects.filter(company=staff.company).values('item__item_name').annotate(total_discount=Sum('discount'))
+  
+  paid = unpaid = total=0
+  # for i in sales_data:
+  #   paid +=float(i.advance)
+  #   unpaid +=float(i.balance)
+  #   total +=float(i.grandtotal)
+  content={
+    'bill':sales_data,
+    'staff':staff,
+    'paid':paid,
+    'unpaid':unpaid,
+    'total':total,
+    'allmodules':allmodules,
+    'items_with_discount': distinct_items_with_discount
+  }
+  return render(request,'company/Item_Wise_Discount_Report.html',content)
