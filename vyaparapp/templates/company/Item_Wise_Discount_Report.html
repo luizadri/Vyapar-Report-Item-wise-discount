@@ -58,11 +58,11 @@
                             <div class=" card-group">
                                 <div class="px-2">
                                     <label style="text-align:left ">From</label><br>
-                                    <input name="FromDate" class="inputdate form-control" type="date" id="in1">
+                                    <input name="FromDate" class="inputdate form-control border-secondary" type="date" id="in1">
                                 </div>
                                 <div class="px-2">
                                     <label style="text-align:left ">To</label><br>
-                                    <input name="ToDate" class="inputdate form-control" type="date" id="in2">
+                                    <input name="ToDate" class="inputdate form-control border-secondary" type="date" id="in2">
                                 </div>
                             </div>
                             <div class=" card-group">
@@ -70,9 +70,9 @@
                                     <a class="btn " title="export to excel"onclick="exportAsExcel()">
                                         <span><img width="25px"src="{% static 'assets/excel2.png' %}" alt="no img"></span>
                                     </a>
-                                    <a class="btn " title="export to PDF"onclick="exportAsPDF()">
+                                    <!-- <a class="btn " title="export to PDF"onclick="exportAsPDF()">
                                         <span><img width="25px"src="{% static 'images/PDF_icon.png' %}" alt="no img"></span>
-                                    </a>
+                                    </a> -->
                                     <a class="btn  btn_print  " title="PRINT"onclick="()">
                                         <span><img width="25px"src="{% static 'assets/printer1.png' %}" alt="no img"></span>
                                     </a>
@@ -95,28 +95,28 @@
                         </div>
                     </div>
 
-                    <div class="row mt-7" style="width: auto;" >
+                    <!-- <div class="row mt-7" style="width: auto;" >
                         <div class="d-flex">
-                            <div class="bg-success  p-3 m-3  mr-3 ml-3 fs-3" style="border-radius: 20px;">
+                            <div class=" p-3 px-5 m-3  mr-3 ml-3 fs-3" style="border-radius: 20px; background-color: lightgray;">
                                 <p style="margin-bottom: 5px;"> Paid</p>
                                 <p style="font-size:large;"> <span id="paidval"></span></p>
                             </div>
                             <div class="text-dark pt-5" >
                                 <i class="fa fa-plus border-dark " aria-hidden="true" style="color: black;"></i>
                             </div>
-                            <div class="bg-warning  p-3 m-3  mr-3 ml-3  fs-3" style="border-radius:20px;">
+                            <div class="px-5  p-3 m-3  mr-3 ml-3  fs-3" style="border-radius:20px; background-color: lightsteelblue;">
                                 <p style="margin-bottom: 5px;"> Unpaid</p>
                                 <p style="font-size:large;"><span id="unpaidval"></span></p>
                             </div>
                             <div class="text-dark pt-5">
                                 <i class="fa-solid fa fa-equals" style="color: black;"></i>
                             </div>
-                            <div class="bg-secondary p-3 m-3 mr-3 ml-3  fs-3" style="border-radius:20px;">
+                            <div class="px-5  p-3 m-3 mr-3 ml-3  fs-3" style="border-radius:20px;background-color: lightgreen;">
                                 <p style="margin-bottom: 5px;"> Total</p>
                                 <p style="font-size:large;">  <span id="totalval"></span></p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
 
 
@@ -132,7 +132,7 @@
                     
                     </div>
                     <div class="modal-body">
-                      <form method="post" action="{% url 'send_purchase_report_via_mail' %}"    id="email" enctype="multipart/form-data">
+                      <form method="post" action="{% url 'send_Item_Wise_Discount_report_via_mail' %}"    id="email" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group" hidden>
                             <label>From DATE</label>
@@ -218,7 +218,7 @@
             <div class="card p-0 bg-light" style="min-height: 60vh;">
                 <div class="row m-0 p-0 pt-3">
                     <div class="col-sm-12 col-lg-3">
-                        <p class="tb fw-bolder pt-2">Purchase Report</p>
+                        <p style="font-size:x-large;" class="tb fw-bolder pt-2 text-secondary">Purchase Report</p>
                         <div class="pt-2">
                             <div class="position-relative">
                                 <div class="position-absolute" style="margin-top:0.4rem;margin-left: 0.5rem;">
@@ -243,7 +243,7 @@
                             <table id="myTable" class="table table-bordered table-info table-hover tb w-100">
                                 <thead>
                                     <tr>
-                                        <th class="text-center fs-2">Item Name
+                                        <th class="text-center fs-2 bg-secondary">ITEM NAME
                                             <div class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-filter filter-button"></i></div>
                             
@@ -255,29 +255,8 @@
                             
                                                     <input type="text" class="form-control filter-value border-secondary">
                             
-                                                    <button class="btn apply-filter btn-sm btn-secondary">Apply</button>
-                                                    <button class="btn clear-filter btn-sm btn-secondary">Clear</button>
-                            
-                                                </div>
-                            
-                                            </div>
-                                        </th>
-                            
-                                        <th class="text-center fs-2">
-                                            Bill No
-                                            <div class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-filter filter-button"></i></div>
-                            
-                                            <div class="dropdown-menu"
-                                                style="box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);">
-                            
-                                                <div class="p-2 filter-dropdown">
-                                                    <label for="">Equal to:</label>
-                            
-                                                    <input type="text" class="form-control filter-value border-secondary">
-                            
-                                                    <button class="btn apply-filter btn-sm btn-secondary">Apply</button>
-                                                    <button class="btn clear-filter btn-sm btn-secondary">Clear</button>
+                                                    <button class="btn apply-filter btn-sm btn-secondary m-2">Apply</button>
+                                                    <button class="btn clear-filter btn-sm btn-secondary m-2">Clear</button>
                             
                                                 </div>
                             
@@ -285,8 +264,7 @@
                                         </th>
                             
                             
-                                        <th class="text-center fs-2">
-                                            Item Name
+                                        <th class="text-center fs-2 bg-secondary">TOTAL QUANTITY SOLD
                                             <div class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-filter filter-button"></i></div>
                             
@@ -298,16 +276,15 @@
                             
                                                     <input type="text" class="form-control filter-value border-secondary">
                             
-                                                    <button class="btn apply-filter btn-sm btn-secondary">Apply</button>
-                                                    <button class="btn clear-filter btn-sm btn-secondary">Clear</button>
+                                                    <button class="btn apply-filter btn-sm btn-secondary m-2">Apply</button>
+                                                    <button class="btn clear-filter btn-sm btn-secondary m-2">Clear</button>
                             
                                                 </div>
                             
                                             </div>
                                         </th>
                             
-                            
-                                        <th class="text-center fs-2">Total Quantity Sold
+                                        <th class="text-center fs-2 bg-secondary">TOTAL SALES AMOUNT
                                             <div class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-filter filter-button"></i></div>
                             
@@ -319,28 +296,8 @@
                             
                                                     <input type="text" class="form-control filter-value border-secondary">
                             
-                                                    <button class="btn apply-filter btn-sm btn-secondary">Apply</button>
-                                                    <button class="btn clear-filter btn-sm btn-secondary">Clear</button>
-                            
-                                                </div>
-                            
-                                            </div>
-                                        </th>
-                            
-                                        <th class="text-center fs-2">Total Sales Amount
-                                            <div class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-filter filter-button"></i></div>
-                            
-                                            <div class="dropdown-menu"
-                                                style="box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);">
-                            
-                                                <div class="p-2 filter-dropdown">
-                                                    <label for="">Equal to:</label>
-                            
-                                                    <input type="text" class="form-control filter-value border-secondary">
-                            
-                                                    <button class="btn apply-filter btn-sm btn-secondary">Apply</button>
-                                                    <button class="btn clear-filter btn-sm btn-secondary">Clear</button>
+                                                    <button class="btn apply-filter btn-sm btn-secondary m-2">Apply</button>
+                                                    <button class="btn clear-filter btn-sm btn-secondary m-2">Clear</button>
                             
                                                 </div>
                             
@@ -349,7 +306,7 @@
                             
                             
                             
-                                        <th class="text-center fs-2">Total Discount Amount
+                                        <th class="text-center fs-2 bg-secondary">TOTAL DISCOUNT AMOUNT
                                             <div class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-filter filter-button"></i></div>
                             
@@ -361,28 +318,8 @@
                             
                                                     <input type="text" class="form-control filter-value border-secondary">
                             
-                                                    <button class="btn apply-filter btn-sm btn-secondary">Apply</button>
-                                                    <button class="btn clear-filter btn-sm btn-secondary">Clear</button>
-                            
-                                                </div>
-                            
-                                            </div>
-                                        </th>
-                            
-                                        <th class="text-center fs-2">Balance
-                                            <div class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-filter filter-button"></i></div>
-                            
-                                            <div class="dropdown-menu"
-                                                style="box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);">
-                            
-                                                <div class="p-2 filter-dropdown">
-                                                    <label for="">Equal to:</label>
-                            
-                                                    <input type="text" class="form-control filter-value border-secondary">
-                            
-                                                    <button class="btn apply-filter btn-sm btn-secondary">Apply</button>
-                                                    <button class="btn clear-filter btn-sm btn-secondary">Clear</button>
+                                                    <button class="btn apply-filter btn-sm btn-secondary m-2">Apply</button>
+                                                    <button class="btn clear-filter btn-sm btn-secondary m-2">Clear</button>
                             
                                                 </div>
                             
@@ -392,27 +329,15 @@
                                 </thead>
                                 <tbody>
                                     {% for i in items_with_discount %}
-                                    <tr>
+                                    <tr class="text-center">
                                         <td>{{i.item__item_name}}</td>
-                                        <td>{{i.billno}}</td>
-                                        <td>{{i.total_discount}}</td>
-                                        <td>bill</td>
-                                        <td>{{i.pay_method}}</td>
-                                        <td>{{i.grandtotal}}</td>
-                                        <td>{{i.balance}}</td>
+                                        <td>{{i.total_quantity}}</td>
+                                        <td>{{i.total_sales_amount}}</td>
+                                        <td>{{i.total_discount_amount}}</td>
+                                      
                                     </tr>
                                     {% endfor %}
-                                    {% for i in debit %}
-                                    <tr>
-                                        <td>{{i.billdate}}</td>
-                                        <td>{{i.billno}}</td>
-                                        <td>{{i.party.party_name}}</td>
-                                        <td>debit note</td>
-                                        <td>{{i.payment_type}}</td>
-                                        <td>{{i.grandtotal}}</td>
-                                        <td>{{i.balance_amount}}</td>
-                                    </tr>
-                                    {% endfor %}
+                                    
                                 </tbody>
                             </table>
                             
@@ -430,64 +355,26 @@
                             <span id="edate" style="color:black; text-align: center;"></span></h5>
                        
                        
-                        <div class="row mt-7" style="width: auto;" >
-                            <div class="d-flex">
-                                <div class="bg-success  p-3 m-3  mr-3 ml-3 fs-3" style="border-radius: 20px;">
-                                    <p style="margin-bottom: 5px;"> Paid</p>
-                                    <p style="font-size:large;"> <span id="paidval1"></span></p>
-                                </div>
-                                <div class="text-dark pt-5" >
-                                    <i class="fa fa-plus border-dark " aria-hidden="true" style="color: black;"></i>
-                                </div>
-                                <div class="bg-warning  p-3 m-3  mr-3 ml-3  fs-3" style="border-radius:20px;">
-                                    <p style="margin-bottom: 5px;"> Unpaid</p>
-                                    <p style="font-size:large;"><span id="unpaidval1"></span></p>
-                                </div>
-                                <div class="text-dark pt-5">
-                                    <i class="fa-solid fa fa-equals" style="color: black;"></i>
-                                </div>
-                                <div class="bg-secondary p-3 m-3 mr-3 ml-3  fs-3" style="border-radius:20px;">
-                                    <p style="margin-bottom: 5px;"> Total</p>
-                                    <p style="font-size:large;">  <span id="totalval1"></span></p>
-                                </div>
-                            </div>
-                        </div>
+                        
                        
                         <table class="table table-bordered" id="myTable1">
                             <thead style="color: blue;">
-                                <th>DATE</th>
-                                <th>NUMBER</th>
-                                <th>PARTY NAME</th>
-                                <th>Type</th>
-                                <th>Payment Type</th>
-                                <th>Amount</th>
-                                <th>BALANCE</th>
+                                <th>ITEM NAME</th>
+                                <th>TOTAL QUANTITY SOLD</th>
+                                <th>TOTAL SALES AMOUNT</th>
+                                <th>TOTAL DISCOUNT AMOUNT</th>
                             </thead>
                             <tbody>
-                                {% for i in bill %}
-                                <tr>
-                                    <td style="width: auto;">{{i.billdate|date:'Y-m-d'}}</td>
-                                    <td>{{i.billno}}</td>
-                                    <td>{{i.party.party_name}}</td>
-                                    <td>bill</td>
-                                    <td>{{i.pay_method}}</td>
-                                    <td>{{i.grandtotal}}</td>
-                                    <td>{{i.balance}}</td>
+                                {% for i in items_with_discount %}
+                                    <tr class="text-center">
+                                        <td>{{i.item__item_name}}</td>
+                                        <td>{{i.total_quantity}}</td>
+                                        <td>{{i.total_sales_amount}}</td>
+                                        <td>{{i.total_discount_amount}}</td>
+                                      
+                                    </tr>
+                                    {% endfor %}
                                     
-                                </tr>
-                                {% endfor %}
-                                    {% for i in debit %}
-                                <tr>
-                                    <td style="width: auto;">{{i.billdate}}</td>
-                                    <td>{{i.billno}}</td>
-                                    <td>{{i.party.party_name}}</td>
-                                    <td>debit note</td>
-                                    <td>{{i.payment_type}}</td>
-                                    <td>{{i.grandtotal}}</td>
-                                    <td>{{i.balance_amount}}</td>
-
-                                    
-                                {% endfor %}
                             </tbody>
                             
                         </table>
@@ -585,31 +472,57 @@ $('#in1').on('change', function () {
     var prow=table2.getElementsByTagName("tr")
 
     console.log(startDate);
-    document.getElementById("sdate").innerHTML =String(Date(startDate.toLocaleDateString())) +  ' TO ';
+    document.getElementById("sdate").innerHTML = String(startDate.toLocaleDateString()) +  ' TO ';
     document.getElementById("s1date").innerHTML =String(startDate.toLocaleDateString()) + ' TO ';
     ''
-    for (var i = 1; i < rows.length; i++) {
-        var row = rows[i];
-        var prow2 = prow[i];
-        var dateCell = row.cells[0];
-        var rowDate = new Date(dateCell.textContent);
+    document.getElementById("from_date").value = startDate.toDateString();
+    document.getElementById("to_date").value = endDate.toDateString();
+    $.ajax({
 
-        if ((rowDate >= startDate) || (rowDate <= endDate && rowDate >= startDate)) {
-            row.style.display = "";
-            prow2.style.display ="";
+        type: 'GET',
+        url: "{% url 'discount_item_filter' %}",
 
-        } else {
-            row.style.display = "none";
-            prow2.style.display ="none";
+        data: {
+            startD: startDate.toDateString(),
+            endD: endDate.toDateString() ,
 
-        }
-    }
-    calculatetotal()
+            csrfmiddlewaretoken: '{{ csrf_token }}'
 
+        },
 
-    // var tdate = new Date(fromDate)
-    // var options = { year: 'numeric', month: 'long', day: 'numeric' };
-    // document.getElementById("d1").innerHTML = tdate.toLocaleDateString(undefined, options);
+        success: function(response) {
+        console.log(response); // logs the JSON response
+        var parties = response.parties;
+        var total1=0
+        var total2=0
+        var total3=0
+        var total4=0
+        $('#myTable tbody').empty();
+        $('#myTable1 tbody').empty();
+        $('#myTable1 tfoot').empty();
+        // Use jQuery to loop through the parties array and create a new table row for each party
+        $.each(parties, function(i, party) {
+            i=i+1
+            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
+            total1=total1+party.Quantity;
+            total2=total2+party.Price;
+            $('#myTable tbody').append(newRow);
+        });
+        $.each(parties, function(i, party) {
+            i=i+1
+            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td></tr>');
+            total3=total3+party.Quantity;
+            total4=total4+party.Price;
+            
+            $('#myTable1 tbody').append(newRow);
+        });
+        var newRow1 = $('<tr><td colspan="2">'+'Total' +'</td><td>' +total3 + '</td><td>' + total4 + '</td><td>' + party.Discount + '</td></tr>');
+        $('#myTable1 tfoot').append(newRow1);
+        document.getElementById("sale").innerHTML = total1;
+        document.getElementById("purchase").innerHTML = total2;
+        },
+
+    });
 
 });
 
@@ -624,26 +537,54 @@ $('#in2').on('change', function () {
     var prow =table2.getElementsByTagName("tr")
     document.getElementById("edate").innerHTML = endDate.toLocaleDateString();
     document.getElementById("e1date").innerHTML = endDate.toLocaleDateString();
-    for (var i = 1; i < rows.length; i++) {
-        var row = rows[i];
-        var prow2 =prow[i];
-        var dateCell = row.cells[0];
-        var rowDate = new Date(dateCell.textContent);
-        if (rowDate <= endDate && rowDate >= startDate) {
-            row.style.display = "";
-            prow2.style.display = "";
+    document.getElementById("from_date").value = startDate.toDateString();
+    document.getElementById("to_date").value = endDate.toDateString();
 
-        } else {
-            row.style.display = "none";
-            prow2.style.display = "none";
+    $.ajax({
 
-        }
-    }
-    calculatetotal()
-    // var tdate = new Date(toDate)
-    // var options = { year: 'numeric', month: 'long', day: 'numeric' };
-    // document.getElementById("d2").innerHTML = "  To  " + tdate.toLocaleDateString(undefined, options);
+        type: 'GET',
+        url: "{% url 'discount_item_filter' %}",
 
+        data: {
+            startD: startDate.toDateString(),
+            endD: endDate.toDateString() ,
+
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+
+        },
+
+        success: function(response) {
+        console.log(response); // logs the JSON response
+        var parties = response.parties;
+        var total1=0
+        var total2=0
+        var total3=0
+        var total4=0
+        $('#myTable tbody').empty();
+        $('#myTable1 tbody').empty();
+        $('#myTable1 tfoot').empty();
+        // Use jQuery to loop through the parties array and create a new table row for each party
+        $.each(parties, function(i, party) {
+            i=i+1
+            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
+            total1=total1+party.Quantity;
+            total2=total2+party.Price;
+            $('#myTable tbody').append(newRow);
+        });
+        $.each(parties, function(i, party) {
+            i=i+1
+            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
+            total3=total3+party.Quantity;
+            total4=total4+party.Price;     
+            $('#myTable1 tbody').append(newRow);
+        });
+        var newRow1 = $('<tr><td colspan="2">'+'Total' +'</td><td>' +total3 + '</td><td>' + total4 + '</td></tr>');
+        $('#myTable1 tfoot').append(newRow1);
+        document.getElementById("sale").innerHTML = total1;
+        document.getElementById("purchase").innerHTML = total2;
+        },
+
+    });
 })
 
 function exportAsExcel() {
@@ -678,7 +619,7 @@ function exportAsExcel() {
             var opt =
             {
                 margin: 0.5,
-                filename: 'Purchase report' + '.pdf',
+                filename: 'Item Wise Discount Report' + '.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 4 },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait', }
