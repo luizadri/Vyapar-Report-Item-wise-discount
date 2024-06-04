@@ -70,9 +70,9 @@
                                     <a class="btn " title="export to excel"onclick="exportAsExcel()">
                                         <span><img width="25px"src="{% static 'assets/excel2.png' %}" alt="no img"></span>
                                     </a>
-                                    <!-- <a class="btn " title="export to PDF"onclick="exportAsPDF()">
+                                    <a class="btn " title="export to PDF"onclick="exportAsPDF()">
                                         <span><img width="25px"src="{% static 'images/PDF_icon.png' %}" alt="no img"></span>
-                                    </a> -->
+                                    </a>
                                     <a class="btn  btn_print  " title="PRINT"onclick="()">
                                         <span><img width="25px"src="{% static 'assets/printer1.png' %}" alt="no img"></span>
                                     </a>
@@ -132,7 +132,7 @@
                     
                     </div>
                     <div class="modal-body">
-                      <form method="post" action="{% url 'send_Item_Wise_Discount_report_via_mail' %}"    id="email" enctype="multipart/form-data">
+                      <form method="post" action=""    id="email" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group" hidden>
                             <label>From DATE</label>
@@ -218,7 +218,7 @@
             <div class="card p-0 bg-light" style="min-height: 60vh;">
                 <div class="row m-0 p-0 pt-3">
                     <div class="col-sm-12 col-lg-3">
-                        <p style="font-size:x-large;" class="tb fw-bolder pt-2 text-secondary">Purchase Report</p>
+                        <p style="font-size:x-large;" class="tb fw-bolder pt-2 text-secondary">Item Wise Discount Report</p>
                         <div class="pt-2">
                             <div class="position-relative">
                                 <div class="position-absolute" style="margin-top:0.4rem;margin-left: 0.5rem;">
@@ -349,7 +349,7 @@
                             
                        
                         <h2 style="text-align: center; color:red;">{{staff.company.company_name}}</h2>
-                        <h4 style="text-align: center;">Purchase Report</h4>
+                        <h4 style="text-align: center;">Item Wise Discount Report</h4>
                         <h5 style="text-align: center;">
                             <span id="sdate" style="color:black; text-align: center;"></span>
                             <span id="edate" style="color:black; text-align: center;"></span></h5>
@@ -475,8 +475,8 @@ $('#in1').on('change', function () {
     document.getElementById("sdate").innerHTML = String(startDate.toLocaleDateString()) +  ' TO ';
     document.getElementById("s1date").innerHTML =String(startDate.toLocaleDateString()) + ' TO ';
     ''
-    document.getElementById("from_date").value = startDate.toDateString();
-    document.getElementById("to_date").value = endDate.toDateString();
+    document.getElementById("fdate").value = startDate.toDateString();
+    document.getElementById("tdate").value = endDate.toDateString();
     $.ajax({
 
         type: 'GET',
@@ -503,20 +503,20 @@ $('#in1').on('change', function () {
         // Use jQuery to loop through the parties array and create a new table row for each party
         $.each(parties, function(i, party) {
             i=i+1
-            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
+            var newRow = $('<tr class="text-center"><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
             total1=total1+party.Quantity;
             total2=total2+party.Price;
             $('#myTable tbody').append(newRow);
         });
         $.each(parties, function(i, party) {
             i=i+1
-            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td></tr>');
+            var newRow = $('<tr class="text-center"><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
             total3=total3+party.Quantity;
             total4=total4+party.Price;
             
             $('#myTable1 tbody').append(newRow);
         });
-        var newRow1 = $('<tr><td colspan="2">'+'Total' +'</td><td>' +total3 + '</td><td>' + total4 + '</td><td>' + party.Discount + '</td></tr>');
+        var newRow = $('<tr class="text-center"><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
         $('#myTable1 tfoot').append(newRow1);
         document.getElementById("sale").innerHTML = total1;
         document.getElementById("purchase").innerHTML = total2;
@@ -537,8 +537,8 @@ $('#in2').on('change', function () {
     var prow =table2.getElementsByTagName("tr")
     document.getElementById("edate").innerHTML = endDate.toLocaleDateString();
     document.getElementById("e1date").innerHTML = endDate.toLocaleDateString();
-    document.getElementById("from_date").value = startDate.toDateString();
-    document.getElementById("to_date").value = endDate.toDateString();
+    document.getElementById("fdate").value = startDate.toDateString();
+    document.getElementById("tdate").value = endDate.toDateString();
 
     $.ajax({
 
@@ -566,19 +566,19 @@ $('#in2').on('change', function () {
         // Use jQuery to loop through the parties array and create a new table row for each party
         $.each(parties, function(i, party) {
             i=i+1
-            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
+            var newRow = $('<tr class="text-center"><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
             total1=total1+party.Quantity;
             total2=total2+party.Price;
             $('#myTable tbody').append(newRow);
         });
         $.each(parties, function(i, party) {
             i=i+1
-            var newRow = $('<tr><td>'+i + '</td><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
+            var newRow = $('<tr class="text-center"><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
             total3=total3+party.Quantity;
             total4=total4+party.Price;     
             $('#myTable1 tbody').append(newRow);
         });
-        var newRow1 = $('<tr><td colspan="2">'+'Total' +'</td><td>' +total3 + '</td><td>' + total4 + '</td></tr>');
+        var newRow = $( '<tr class="text-center"><td>' + party.item_name+ '</td><td>' + party.Quantity + '</td><td>' + party.Price + '</td><td>' + party.Discount + '</td></tr>');
         $('#myTable1 tfoot').append(newRow1);
         document.getElementById("sale").innerHTML = total1;
         document.getElementById("purchase").innerHTML = total2;
@@ -593,7 +593,7 @@ function exportAsExcel() {
     const table = document.getElementById('myTable1'); // Replace 'myTable' with your table's ID
     const wb = XLSX.utils.table_to_book(table);
 
-    XLSX.writeFile(wb, 'purchasereport.xlsx');
+    XLSX.writeFile(wb, 'Item Wise Discount Report.xlsx');
     location.reload();
 }
 </script>

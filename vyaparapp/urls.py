@@ -543,7 +543,6 @@ urlpatterns = [
 
     path('Item_Wise_Discount_Report/', views.Item_Wise_Discount_Report, name='Item_Wise_Discount_Report'),
     path('Item_Wise_Discount_Report1/', views.Item_Wise_Discount_Report1, name='Item_Wise_Discount_Report1'),
-    path('send_Item_Wise_Discount_report_via_mail/', views.send_Item_Wise_Discount_report_via_mail, name='send_Item_Wise_Discount_report_via_mail'),
     path('discount_item_filter/', views.discount_item_filter, name='discount_item_filter'),
     
     
